@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Building Beautiful Websites<br>That Drive Results</h1>
+            <p class="hero-subtitle">Custom web development tailored to your vision with competitive pricing and 1-on-1 collaboration</p>
+            <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Book a Consultation</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Preview -->
+<section class="services-preview section-padding">
+    <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Professional packages designed to fit your needs and budget</p>
+        
+        <div class="services-grid">
+            <!-- Basic Package -->
+            <div class="service-card">
+                <div class="service-header">
+                    <h3>Basic</h3>
+                    <p class="service-price">Starting at $499</p>
+                </div>
+                <ul class="service-features">
+                    <li>2-3 Pages</li>
+                    <li>Mobile Responsive</li>
+                    <li>Contact Form</li>
+                    <li>2 Revisions</li>
+                    <li>2 Week Delivery</li>
+                </ul>
+            </div>
+            
+            <!-- Standard Package -->
+            <div class="service-card featured">
+                <div class="service-badge">Most Popular</div>
+                <div class="service-header">
+                    <h3>Standard</h3>
+                    <p class="service-price">Starting at $999</p>
+                </div>
+                <ul class="service-features">
+                    <li>4 Pages</li>
+                    <li>Mobile Responsive</li>
+                    <li>Contact Form + Email</li>
+                    <li>Basic SEO</li>
+                    <li>3 Revisions</li>
+                    <li>3 Week Delivery</li>
+                </ul>
+            </div>
+            
+            <!-- Premium Package -->
+            <div class="service-card">
+                <div class="service-header">
+                    <h3>Premium</h3>
+                    <p class="service-price">Starting at $1,999</p>
+                </div>
+                <ul class="service-features">
+                    <li>6 Pages + Blog</li>
+                    <li>Everything in Standard</li>
+                    <li>Database Integration</li>
+                    <li>Advanced SEO</li>
+                    <li>6 Revisions</li>
+                    <li>1 Month Delivery</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="cta-center">
+            <a href="{{ url_for('main.services') }}" class="btn btn-secondary">View Full Pricing</a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us - Simple Comparison -->
+<section class="why-choose-us section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title">Why Choose Static Designs?</h2>
+        
+        <div class="comparison-simple">
+            <div class="comparison-column">
+                <div class="comparison-icon">🏢</div>
+                <h3>Traditional Agencies</h3>
+                <ul class="comparison-list negative">
+                    <li>$3,000 - $10,000+ pricing</li>
+                    <li>Multiple handoffs</li>
+                    <li>Template-based designs</li>
+                    <li>Slow response times</li>
+                </ul>
+            </div>
+            
+            <div class="comparison-column highlight">
+                <div class="comparison-icon">✨</div>
+                <h3>Static Designs</h3>
+                <ul class="comparison-list positive">
+                    <li>$499 - $2,000 pricing</li>
+                    <li>Direct 1-on-1 collaboration</li>
+                    <li>100% custom designs</li>
+                    <li>24-hour response time</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Preview -->
+<section class="portfolio-preview section-padding">
+    <div class="container">
+        <h2 class="section-title">Recent Work</h2>
+        <p class="section-subtitle">Explore our latest projects</p>
+        
+        <div class="portfolio-carousel" id="portfolioCarousel">
+            <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous project">‹</button>
+            
+            <div class="portfolio-carousel-track">
+                <!-- Project 1 -->
+                <div class="portfolio-preview-item">
+                    <div class="portfolio-preview-image">
+                        <img src="{{ url_for('static', filename='images/equalitie-preview.jpg') }}" alt="Equalitie E-commerce Website">
+                    </div>
+                    <div class="portfolio-preview-info">
+                        <h3>Equalitie</h3>
+                        <p class="tech-tags">HTML • CSS • JavaScript • Python • Flask</p>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="portfolio-preview-item">
+                    <div class="portfolio-preview-image">
+                        <img src="{{ url_for('static', filename='images/mqb-preview.jpg') }}" alt="Moore Quality Builders">
+                    </div>
+                    <div class="portfolio-preview-info">
+                        <h3>Moore Quality Builders</h3>
+                        <p class="tech-tags">HTML • CSS • JavaScript • Python • Flask</p>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="portfolio-preview-item">
+                    <div class="portfolio-preview-image">
+                        <img src="{{ url_for('static', filename='images/gbr-preview.jpg') }}" alt="Gameboy Retreat">
+                    </div>
+                    <div class="portfolio-preview-info">
+                        <h3>Gameboy Retreat</h3>
+                        <p class="tech-tags">HTML • CSS • JavaScript • Python • Flask</p>
+                    </div>
+                </div>
+
+                <div class="portfolio-preview-item">
+                    <div class="portfolio-preview-image">
+                        <img src="{{ url_for('static', filename='images/sleepystatic-preview.jpg') }}" alt="Gameboy Retreat">
+                    </div>
+                    <div class="portfolio-preview-info">
+                        <h3>Sleepy Static</h3>
+                        <p class="tech-tags">HTML • CSS • JavaScript • Python • Flask</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="carousel-btn next" id="carouselNext" aria-label="Next project">›</button>
+        </div>
+        
+        <div class="cta-center">
+            <a href="{{ url_for('main.portfolio') }}" class="btn btn-secondary">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title">What Clients Say</h2>
+        
+        <div class="testimonials-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Working with Static Designs was a breeze. The 1-on-1 collaboration meant my vision came to life exactly as I imagined. Great value for the quality delivered."</p>
+                <div class="testimonial-author">
+                    <p class="author-name">Sarah Johnson</p>
+                    <p class="author-title">Business Owner</p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Professional, responsive, and incredibly talented. The pricing was fair and the final product exceeded my expectations. Highly recommend!"</p>
+                <div class="testimonial-author">
+                    <p class="author-name">Michael Chen</p>
+                    <p class="author-title">Startup Founder</p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The attention to detail and willingness to iterate until perfect made all the difference. Best web developer I've worked with."</p>
+                <div class="testimonial-author">
+                    <p class="author-name">Emily Rodriguez</p>
+                    <p class="author-title">Creative Director</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="cta-section section-padding">
+    <div class="container">
+        <h2 class="cta-title">Ready to Start Your Project?</h2>
+        <p class="cta-subtitle">Let's bring your vision to life with a custom website tailored to your needs</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Get Started Today</a>
+    </div>
+</section>
+{% endblock %}

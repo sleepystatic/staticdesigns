@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Portfolio - Static Designs{% endblock %}
+{% block description %}Explore our portfolio of custom web development projects featuring e-commerce sites, business websites, and more.{% endblock %}
+
+{% block content %}
+<!-- Portfolio Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Our Portfolio</h1>
+        <p class="page-subtitle">Custom websites built with care and expertise</p>
+    </div>
+</section>
+
+<!-- Portfolio Grid -->
+<section class="portfolio-grid-section section-padding">
+    <div class="container">
+        <div class="portfolio-grid">
+            {% for project in projects %}
+            <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="portfolio-item">
+                <div class="portfolio-item-image">
+                    <img src="{{ url_for('static', filename='images/' + project.image) }}" alt="{{ project.name }} website screenshot">
+                </div>
+                <div class="portfolio-item-overlay">
+                    <div class="portfolio-item-content">
+                        <h3 class="portfolio-item-title">{{ project.name }}</h3>
+                        <p class="portfolio-item-tech">
+                            {% for tech in project.technologies %}
+                                {{ tech }}{% if not loop.last %} • {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        
+        <!-- Empty state for future projects -->
+        <div class="portfolio-expand-notice">
+            <p>More projects coming soon! Check back regularly for updates.</p>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section-padding bg-light">
+    <div class="container">
+        <h2 class="cta-title">Want Your Project Featured Here?</h2>
+        <p class="cta-subtitle">Let's create something amazing together</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Start Your Project</a>
+    </div>
+</section>
+{% endblock %}

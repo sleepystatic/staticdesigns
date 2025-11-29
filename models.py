@@ -1,0 +1,19 @@
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+
+class ContactSubmission(db.Model):
+    __tablename__ = 'contact_submissions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    project_type = db.Column(db.String(200), nullable=False)
+    budget = db.Column(db.String(50), nullable=False)
+    comments = db.Column(db.Text, nullable=False)
+    submitted_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<ContactSubmission {self.name} - {self.email}>'

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}About - Static Designs{% endblock %}
+{% block description %}Learn about Static Designs and our mission to provide professional web development with personalized service and competitive pricing.{% endblock %}
+
+{% block content %}
+<!-- About Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">About Static Designs</h1>
+        <p class="page-subtitle">Bringing your digital vision to life, one project at a time</p>
+    </div>
+</section>
+
+<!-- About Content -->
+<section class="about-content section-padding">
+    <div class="container">
+        <div class="about-intro">
+            <h2>Our Story</h2>
+            <p class="lead-text">Static Designs was founded on a simple belief: quality web development should be accessible, affordable, and personal. We're not a faceless agency with layers of management—we're a dedicated team that works directly with you to bring your vision to life.</p>
+        </div>
+        
+        <div class="about-mission">
+            <h2>What We Do</h2>
+            <p>We specialize in creating custom websites that are beautiful, functional, and built to perform. Whether you need a simple portfolio site, a business website, or a complex e-commerce platform, we have the expertise to deliver.</p>
+            <p>Every project is approached with the same level of care and attention to detail. We don't use templates or cookie-cutter solutions—your website is built from scratch based on your unique requirements and brand identity.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Our Values -->
+<section class="values-section section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title">Our Values</h2>
+        
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">🎯</div>
+                <h3>Customer-Focused</h3>
+                <p>Your success is our success. We listen to your needs and work collaboratively to exceed your expectations.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">💎</div>
+                <h3>Quality First</h3>
+                <p>We never compromise on quality. Clean code, optimized performance, and attention to detail in every project.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>Transparent Communication</h3>
+                <p>No surprises, no hidden fees. We keep you informed at every step with clear, honest communication.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">⚡</div>
+                <h3>Efficient & Reliable</h3>
+                <p>We respect your time and deadlines. Projects are delivered on schedule without sacrificing quality.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">💰</div>
+                <h3>Fair Pricing</h3>
+                <p>Professional quality at competitive rates. Great websites shouldn't break the bank.</p>
+            </div>
+            
+            <div class="value-card">
+                <div class="value-icon">🌱</div>
+                <h3>Continuous Growth</h3>
+                <p>We stay current with the latest web technologies to deliver modern, future-proof solutions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Approach -->
+<section class="approach-section section-padding">
+    <div class="container">
+        <h2 class="section-title">Our Approach</h2>
+        <div class="approach-content">
+            <div class="approach-item">
+                <h3>1-on-1 Collaboration</h3>
+                <p>You'll work directly with your developer through Zoom meetings or in-person sessions. No project managers, no middlemen—just direct, efficient communication.</p>
+            </div>
+            
+            <div class="approach-item">
+                <h3>Your Creative Control</h3>
+                <p>This is your website, your vision. We provide expert guidance and a thoughtful foundation, but the creative decisions are always yours to make.</p>
+            </div>
+            
+            <div class="approach-item">
+                <h3>Custom Solutions</h3>
+                <p>We build everything from scratch. No templates, no shortcuts. Your website will be truly unique and tailored to your specific needs.</p>
+            </div>
+            
+            <div class="approach-item">
+                <h3>Responsive & Modern</h3>
+                <p>Every website we build looks stunning and functions flawlessly on all devices—from smartphones to large desktop monitors.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section section-padding">
+    <div class="container">
+        <h2 class="cta-title">Let's Work Together</h2>
+        <p class="cta-subtitle">Ready to start your project? Get in touch for a free consultation</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Contact Us</a>
+    </div>
+</section>
+{% endblock %}

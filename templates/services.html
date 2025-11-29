@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block title %}Services & Pricing - Static Designs{% endblock %}
+{% block description %}Competitive web development pricing with three service tiers starting at $499. Custom packages, transparent pricing, and 1-on-1 collaboration.{% endblock %}
+
+{% block content %}
+<!-- Services Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Services & Pricing</h1>
+        <p class="page-subtitle">Professional web development that fits your budget</p>
+    </div>
+</section>
+
+<!-- Pricing Packages -->
+<section class="pricing-section section-padding">
+    <div class="container">
+        <h2 class="section-title">Choose Your Package</h2>
+        
+        <div class="pricing-grid">
+            <!-- Basic Package -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3 class="pricing-title">Basic</h3>
+                    <p class="pricing-price">$499</p>
+                    <p class="pricing-description">Perfect for personal sites and small businesses</p>
+                </div>
+                <ul class="pricing-features">
+                    <li><span class="feature-icon">✓</span> 2-3 Pages (Home + 1-2 others)</li>
+                    <li><span class="feature-icon">✓</span> Mobile Responsive Design</li>
+                    <li><span class="feature-icon">✓</span> Contact Form</li>
+                    <li><span class="feature-icon">✓</span> 2 Rounds of Revisions</li>
+                    <li><span class="feature-icon">✓</span> 2 Week Delivery</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $100 each</li>
+                </ul>
+                <a href="{{ url_for('contact.contact') }}" class="btn btn-outline">Get Started</a>
+            </div>
+            
+            <!-- Standard Package -->
+            <div class="pricing-card featured">
+                <div class="pricing-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <h3 class="pricing-title">Standard</h3>
+                    <p class="pricing-price">$999</p>
+                    <p class="pricing-description">Ideal for growing businesses with more content</p>
+                </div>
+                <ul class="pricing-features">
+                    <li><span class="feature-icon">✓</span> 4 Pages Included</li>
+                    <li><span class="feature-icon">✓</span> Everything in Basic, PLUS:</li>
+                    <li><span class="feature-icon">✓</span> Email Integration</li>
+                    <li><span class="feature-icon">✓</span> Basic SEO Optimization</li>
+                    <li><span class="feature-icon">✓</span> 3 Rounds of Revisions</li>
+                    <li><span class="feature-icon">✓</span> 3 Week Delivery</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $100 each</li>
+                </ul>
+                <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get Started</a>
+            </div>
+            
+            <!-- Premium Package -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3 class="pricing-title">Premium</h3>
+                    <p class="pricing-price">$2,000</p>
+                    <p class="pricing-description">Complete solution for established businesses</p>
+                </div>
+                <ul class="pricing-features">
+                    <li><span class="feature-icon">✓</span> 6 Pages + Blog Section (3 posts)</li>
+                    <li><span class="feature-icon">✓</span> Everything in Standard, PLUS:</li>
+                    <li><span class="feature-icon">✓</span> Database Integration</li>
+                    <li><span class="feature-icon">✓</span> Advanced SEO</li>
+                    <li><span class="feature-icon">✓</span> 6 Rounds of Revisions</li>
+                    <li><span class="feature-icon">✓</span> 1 Month Delivery</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $100+ each (based on complexity)</li>
+                </ul>
+                <a href="{{ url_for('contact.contact') }}" class="btn btn-outline">Get Started</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add-Ons -->
+<section class="addons-section section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title">Additional Services</h2>
+        <p class="section-subtitle">Enhance your website with these optional add-ons</p>
+        
+        <div class="addons-grid">
+            <div class="addon-card">
+                <h3>Extra Pages</h3>
+                <p class="addon-price">$100/page</p>
+                <p>Need more than what's included? Add additional pages to any package.</p>
+            </div>
+            
+            <div class="addon-card">
+                <h3>Logo Design</h3>
+                <p class="addon-price">$200 - $500</p>
+                <p>Custom logo design to match your brand identity and website aesthetic.</p>
+            </div>
+            
+            <div class="addon-card">
+                <h3>Content Writing</h3>
+                <p class="addon-price">$75/page</p>
+                <p>Professional copywriting that engages visitors and drives conversions.</p>
+            </div>
+            
+            <div class="addon-card">
+                <h3>Hosting Only</h3>
+                <p class="addon-price">$50/month</p>
+                <p>Reliable hosting with SSL, automatic backups, and 99.9% uptime.</p>
+            </div>
+            
+            <div class="addon-card">
+                <h3>Hosting + Maintenance</h3>
+                <p class="addon-price">$100/month</p>
+                <p>Hosting plus ongoing updates, security monitoring, and technical support.</p>
+            </div>
+            
+            <div class="addon-card">
+                <h3>CMS Integration</h3>
+                <p class="addon-price">Coming Soon</p>
+                <p>Manage your content easily with our custom CMS solution (free with Premium).</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Competitor Comparison -->
+<section class="comparison-section section-padding">
+    <div class="container">
+        <h2 class="section-title">Why Static Designs Stands Out</h2>
+        <p class="section-subtitle">See how we compare to traditional agencies and freelancers</p>
+        
+        <div class="comparison-table-wrapper">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th class="highlight-column">Static Designs</th>
+                        <th>Traditional Agencies</th>
+                        <th>Freelance Platforms</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature-name">Starting Price</td>
+                        <td class="highlight-column"><strong>$499 - $2,000</strong></td>
+                        <td>$3,000 - $10,000+</td>
+                        <td>$200 - $1,500</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Workflow</td>
+                        <td class="highlight-column"><strong>Direct 1-on-1 collaboration</strong><br><small>Zoom/in-person meetings</small></td>
+                        <td>Multiple team handoffs<br><small>Project managers as middlemen</small></td>
+                        <td>Often remote only<br><small>Limited communication</small></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Customization</td>
+                        <td class="highlight-column"><strong>100% custom design</strong><br><small>Built from your vision</small></td>
+                        <td>Template modifications<br><small>Limited flexibility</small></td>
+                        <td>Varies greatly<br><small>Often template-based</small></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Response Time</td>
+                        <td class="highlight-column"><strong>Within 24 hours</strong></td>
+                        <td>2-5 business days</td>
+                        <td>Varies (24hrs - 1 week)</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Revisions</td>
+                        <td class="highlight-column"><strong>2-6 rounds included</strong><br><small>Based on package</small></td>
+                        <td>1-2 rounds<br><small>Extra charges apply</small></td>
+                        <td>1-3 rounds<br><small>Varies by freelancer</small></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Creative Control</td>
+                        <td class="highlight-column"><strong>Complete control</strong><br><small>Your vision, our expertise</small></td>
+                        <td>Limited input<br><small>Follow agency standards</small></td>
+                        <td>Moderate control<br><small>Depends on freelancer</small></td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Quality Guarantee</td>
+                        <td class="highlight-column"><strong>Professional standards</strong><br><small>Clean code, optimized</small></td>
+                        <td>Professional standards<br><small>Corporate processes</small></td>
+                        <td>Inconsistent<br><small>Skill level varies</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="comparison-summary">
+            <h3>The Static Designs Advantage</h3>
+            <div class="advantage-grid">
+                <div class="advantage-item">
+                    <div class="advantage-icon">💰</div>
+                    <h4>Competitive Pricing</h4>
+                    <p>High-quality work at prices that don't break the bank. Up to 70% less than traditional agencies.</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">🤝</div>
+                    <h4>Personal Touch</h4>
+                    <p>Work directly with your developer. No middlemen, no confusion, just clear communication.</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">✨</div>
+                    <h4>Custom Everything</h4>
+                    <p>Your website is built from scratch based on your unique vision, not modified from a template.</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="advantage-icon">⚡</div>
+                    <h4>Fast Response</h4>
+                    <p>Questions answered within 24 hours. No waiting days for responses from busy agencies.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Payment Structure Info -->
+<section class="payment-info section-padding bg-light">
+    <div class="container">
+        <h2 class="section-title">Simple, Transparent Process</h2>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h3>Consultation</h3>
+                <p>We discuss your vision, requirements, and timeline</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h3>Proposal</h3>
+                <p>Receive a detailed quote and project timeline</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h3>Development</h3>
+                <p>Your site comes to life with regular updates</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h3>Launch</h3>
+                <p>Go live with your beautiful new website</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Final CTA -->
+<section class="cta-section section-padding">
+    <div class="container">
+        <h2 class="cta-title">Ready to Get Started?</h2>
+        <p class="cta-subtitle">Book a free consultation to discuss your project and get a custom quote</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Book Your Consultation</a>
+    </div>
+</section>
+{% endblock %}
