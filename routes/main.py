@@ -36,6 +36,13 @@ def portfolio():
             'url': 'https://sleepystatic.com',
             'image': 'sleepystatic-preview.jpg',
             'technologies': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask']
+        },
+
+        {
+            'name': 'Pixel Flip',
+            'url': 'https://pixelflip.app/',
+            'image': 'pixelflip-preview.jpg',
+            'technologies': ['React', 'NodeJS', 'JavaScript']
         }
     ]
     return render_template('portfolio.html', projects=projects)
