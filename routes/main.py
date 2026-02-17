@@ -42,7 +42,14 @@ def portfolio():
             'name': 'Pixel Flip',
             'url': 'https://pixelflip.app/',
             'image': 'pixelflip-preview.jpg',
-            'technologies': ['React', 'NodeJS', 'JavaScript']
+            'technologies': ['React', 'NodeJS', 'JavaScript', 'Python', 'HTML', 'CSS']
+        },
+
+        {
+            'name': 'Amor Frames',
+            'url': 'https://amorframesbyluv.com/',
+            'image': 'af-preview.jpg',
+            'technologies': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask']
         }
     ]
     return render_template('portfolio.html', projects=projects)
