@@ -50,6 +50,13 @@ def portfolio():
             'url': 'https://amorframesbyluv.com/',
             'image': 'af-preview.jpg',
             'technologies': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask']
+        },
+
+        {
+            'name': 'Ellie Copeland',
+            'url': 'https://elliecope.land/',
+            'image': 'ec-preview.jpg',
+            'technologies': ['HTML', 'CSS', 'JavaScript', 'NodeJS']
         }
     ]
     return render_template('portfolio.html', projects=projects)

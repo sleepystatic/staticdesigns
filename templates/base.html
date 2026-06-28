@@ -11,6 +11,9 @@
 
     <title>{% block title %}Static Designs - Professional Web Development{% endblock %}</title>
     <meta name="description" content="{% block description %}Static Designs offers custom web development services with competitive pricing and personalized 1 on 1 collaboration.{% endblock %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
@@ -88,11 +91,11 @@
                 </div>
                 <div class="footer-section">
                     <h4>Get In Touch</h4>
-                    <a href="{{ url_for('contact.contact') }}" class="btn btn-secondary">Book a Consultation</a>
+                    <a href="{{ url_for('contact.contact') }}" class="btn btn-secondary">Get a Free Evaluation</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Static Designs. All rights reserved.</p>
+                <p>&copy; 2026 Static Designs. All rights reserved.</p>
             </div>
         </div>
     </footer>

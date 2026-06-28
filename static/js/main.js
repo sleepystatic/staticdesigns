@@ -88,6 +88,52 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================
+    // HERO SHOWCASE ROTATION
+    // ============================================
+    const heroImg = document.getElementById('heroShowcaseImg');
+    const browserUrl = document.getElementById('browserUrlText');
+    const indicators = document.querySelectorAll('.indicator-bar');
+
+    if (heroImg && browserUrl && indicators.length) {
+        const showcaseProjects = [
+            { img: '/static/images/mqb-preview.jpg', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
+            { img: '/static/images/pixelflip-preview.jpg', url: 'pixelflip.app', alt: 'Pixel Flip' },
+            { img: '/static/images/af-preview.jpg', url: 'amorframesbyluv.com', alt: 'Amor Frames' }
+        ];
+        let currentIndex = 0;
+        let rotationTimer;
+
+        function switchProject(index) {
+            if (index === currentIndex) return;
+            heroImg.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = index;
+                heroImg.src = showcaseProjects[index].img;
+                heroImg.alt = showcaseProjects[index].alt + ' — a Static Designs project';
+                browserUrl.textContent = showcaseProjects[index].url;
+                heroImg.classList.remove('fade-out');
+                indicators.forEach((bar, i) => bar.classList.toggle('active', i === index));
+            }, 300);
+        }
+
+        function startRotation() {
+            rotationTimer = setInterval(() => {
+                switchProject((currentIndex + 1) % showcaseProjects.length);
+            }, 5000);
+        }
+
+        indicators.forEach(bar => {
+            bar.addEventListener('click', () => {
+                clearInterval(rotationTimer);
+                switchProject(parseInt(bar.dataset.index));
+                startRotation();
+            });
+        });
+
+        startRotation();
+    }
+
+    // ============================================
     // SMOOTH SCROLL FOR ANCHOR LINKS
     // ============================================
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
@@ -129,12 +175,34 @@ document.addEventListener('DOMContentLoaded', function() {
             const currentScroll = window.pageYOffset;
 
             if (currentScroll > 100) {
-                navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
             } else {
-                navbar.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
+                navbar.style.boxShadow = '0 4px 6px -1px rgba(217, 70, 239, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.3)';
             }
 
             lastScroll = currentScroll;
+        });
+    }
+
+    // ============================================
+    // SPOTLIGHT GRADIENT EFFECT
+    // ============================================
+    const spotlightElements = document.querySelectorAll('.cta-section, .service-card.featured, .pricing-card.featured');
+
+    if (window.matchMedia('(hover: hover)').matches) {
+        spotlightElements.forEach(el => {
+            el.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                this.style.setProperty('--gradient-x', x + '%');
+                this.style.setProperty('--gradient-y', y + '%');
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.style.setProperty('--gradient-x', '50%');
+                this.style.setProperty('--gradient-y', '50%');
+            });
         });
     }
 
