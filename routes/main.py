@@ -1,6 +1,18 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 
 main_bp = Blueprint('main', __name__)
+
+BLOG_POSTS = [
+    {
+        'slug': 'why-custom-coded-websites-beat-wordpress',
+        'title': 'Why Custom-Coded Websites Beat WordPress, Wix, Squarespace, and GoDaddy',
+        'description': 'Discover why a hand-coded website outperforms page builders in speed, SEO, security, and long-term value for your business.',
+        'date': 'August 26, 2026',
+        'read_time': '6 min read',
+        'image': 'blog-custom-vs-builders.jpg',
+        'template': 'blog/why-custom-coded-websites-beat-wordpress.html'
+    },
+]
 
 @main_bp.route('/')
 def home():
@@ -50,13 +62,6 @@ def portfolio():
             'url': 'https://amorframesbyluv.com/',
             'image': 'af-preview.jpg',
             'technologies': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask']
-        },
-
-        {
-            'name': 'Ellie Copeland',
-            'url': 'https://elliecope.land/',
-            'image': 'ec-preview.jpg',
-            'technologies': ['HTML', 'CSS', 'JavaScript', 'NodeJS']
         }
     ]
     return render_template('portfolio.html', projects=projects)
@@ -70,3 +75,16 @@ def services():
 def about():
     """About page"""
     return render_template('about.html')
+
+@main_bp.route('/blog')
+def blog():
+    """Blog listing page"""
+    return render_template('blog.html', posts=BLOG_POSTS)
+
+@main_bp.route('/blog/<slug>')
+def blog_post(slug):
+    """Individual blog post"""
+    post = next((p for p in BLOG_POSTS if p['slug'] == slug), None)
+    if not post:
+        abort(404)
+    return render_template(post['template'], post=post)

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Static Designs Blog{% endblock %}
+{% block description %}{{ post.description }}{% endblock %}
+
+{% block content %}
+<article class="blog-post">
+    <header class="blog-post-header">
+        <div class="container">
+            <a href="{{ url_for('main.blog') }}" class="blog-back-link">&larr; Back to Blog</a>
+            <h1 class="blog-post-title">{{ post.title }}</h1>
+            <div class="blog-post-meta">
+                <span>{{ post.date }}</span>
+                <span>{{ post.read_time }}</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="blog-post-body">
+            <p class="lead-text">If you're a small business owner looking for a website, you've probably considered WordPress, Wix, Squarespace, or GoDaddy. They're everywhere, they're cheap, and they promise you can "build a website in minutes." So why would anyone pay more for a custom-coded website?</p>
+
+            <p>Because those platforms are selling convenience, not results. And when your website is the first impression most customers will have of your business, convenience isn't enough.</p>
+
+            <h2>Speed matters more than you think</h2>
+
+            <p>Page builders load dozens of scripts, plugins, and stylesheets whether your site needs them or not. A typical WordPress site with a popular theme loads 2-4MB of data and takes 3-6 seconds to fully render. A custom-coded site? Under 1MB, loading in under 2 seconds.</p>
+
+            <p>Google has been clear: <strong>page speed directly affects your search ranking.</strong> Every second of load time costs you roughly 7% in conversions. That's real money walking out the door because your page builder loaded 15 JavaScript files you didn't ask for.</p>
+
+            <h2>SEO that actually works</h2>
+
+            <p>WordPress plugins like Yoast give you a green light and call it "SEO optimized." But real SEO goes deeper than meta tags:</p>
+
+            <ul>
+                <li><strong>Clean HTML structure</strong> that search engines can parse instantly, not the div-soup that page builders generate</li>
+                <li><strong>Semantic markup</strong> with proper heading hierarchy, schema data, and accessible labels</li>
+                <li><strong>No bloat</strong> — every line of code serves a purpose, which means faster crawling and indexing</li>
+                <li><strong>Core Web Vitals</strong> scores that actually pass Google's thresholds, not "close enough"</li>
+            </ul>
+
+            <p>A custom site is built with SEO baked into its foundation, not bolted on as an afterthought.</p>
+
+            <h2>Security isn't optional</h2>
+
+            <p>WordPress powers 43% of the web, which makes it the biggest target for hackers. In 2025 alone, over 90,000 attacks per minute were directed at WordPress sites. Every plugin you install is another potential vulnerability. Every theme update you skip is an open door.</p>
+
+            <p>A custom-coded site has a fraction of the attack surface. No plugin vulnerabilities. No theme exploits. No brute-force login pages. Your code does exactly what it needs to and nothing more.</p>
+
+            <h2>You actually own your website</h2>
+
+            <p>Build on Wix or Squarespace and try to leave. Your design, your content layout, your functionality — it's all locked inside their platform. You're renting, not owning.</p>
+
+            <p>A custom website is yours. The code, the design, the hosting — you control all of it. Want to switch hosting providers? Done. Want to add a feature no plugin supports? Built. Want to sell the business and hand over the website? No platform lock-in to negotiate.</p>
+
+            <h2>Design without compromise</h2>
+
+            <p>Every Squarespace site looks like a Squarespace site. Every Wix site is constrained by Wix's editor. Page builders give you the illusion of creativity while keeping you inside their box.</p>
+
+            <p>Custom code has no box. Your site is designed around your brand, your customers, and your goals — not around a template's limitations. Every animation, layout, and interaction is intentional, not "the closest option available."</p>
+
+            <h2>"But custom is too expensive"</h2>
+
+            <p>Here's the math most people skip:</p>
+
+            <ul>
+                <li>Squarespace Business plan: $33/month = <strong>$396/year</strong>, every year, forever</li>
+                <li>WordPress with premium theme + hosting + plugins: <strong>$300-$600/year</strong></li>
+                <li>Custom website with hosting: one-time build cost + <strong>$50-$100/month</strong> for hosting and maintenance</li>
+            </ul>
+
+            <p>Within 2-3 years, the total cost is comparable. But the custom site loads faster, ranks higher, converts better, and doesn't need you to wrestle with a page builder every time you want to change a heading.</p>
+
+            <p>The question isn't whether you can afford a custom website. It's whether you can afford not to have one.</p>
+
+            <h2>The bottom line</h2>
+
+            <p>Page builders exist because they're easy. Custom-coded websites exist because they work. If your website is a business card that sits in a drawer, a page builder is fine. If your website is supposed to bring in customers, build trust, and represent the quality of what you do — it needs to be built with the same care you put into your business.</p>
+
+            <div class="blog-cta-box">
+                <h3>Want to see the difference for yourself?</h3>
+                <p>We'll audit your current website and show you exactly where it's costing you customers — for free.</p>
+                <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get Your Free Website Evaluation</a>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Static Designs{% endblock %}
+{% block description %}Web development insights, tips, and guides from Static Designs. Learn about custom web design, SEO, and growing your online presence.{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Blog</h1>
+        <p class="page-subtitle">Insights and guides to help your business succeed online</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="blog-grid">
+            {% for post in posts %}
+            <a href="{{ url_for('main.blog_post', slug=post.slug) }}" class="blog-card">
+                <div class="blog-card-image">
+                    <img src="{{ url_for('static', filename='images/' + post.image) }}" alt="{{ post.title }}">
+                </div>
+                <div class="blog-card-content">
+                    <div class="blog-card-meta">
+                        <span>{{ post.date }}</span>
+                        <span>{{ post.read_time }}</span>
+                    </div>
+                    <h2>{{ post.title }}</h2>
+                    <p>{{ post.description }}</p>
+                    <span class="blog-read-more">Read article</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="cta-section section-padding">
+    <div class="container">
+        <h2 class="cta-title">Have a Project in Mind?</h2>
+        <p class="cta-subtitle">Let's talk about how a custom website can grow your business</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-cta-outline btn-large">Get Your Free Website Evaluation</a>
+    </div>
+</section>
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from models import db, ContactSubmission
-from flask_mail import Message, Mail
+from flask_mail import Message
 import re
 
 contact_bp = Blueprint('contact', __name__)
@@ -19,6 +19,7 @@ def contact():
         # Get form data
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
+        website_url = request.form.get('website_url', '').strip()
         project_type = request.form.get('project_type', '').strip()
         budget = request.form.get('budget', '').strip()
         comments = request.form.get('comments', '').strip()
@@ -58,8 +59,7 @@ def contact():
 
             # Send email notification
             try:
-                # Create Mail instance with current app
-                mail = Mail(current_app)
+                from app import mail
 
                 msg = Message(
                     subject=f'New Contact Form Submission - {name}',
@@ -69,6 +69,7 @@ New contact form submission from Static Designs website:
 
 Name: {name}
 Email: {email}
+Current Website: {website_url or 'Not provided'}
 Project Type: {project_type}
 Budget: {budget}
 

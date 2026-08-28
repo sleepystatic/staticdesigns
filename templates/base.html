@@ -29,6 +29,7 @@
                 <li><a href="{{ url_for('main.portfolio') }}" class="nav-link {% if request.endpoint == 'main.portfolio' %}active{% endif %}">Portfolio</a></li>
                 <li><a href="{{ url_for('main.services') }}" class="nav-link {% if request.endpoint == 'main.services' %}active{% endif %}">Services</a></li>
                 <li><a href="{{ url_for('main.about') }}" class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}">About</a></li>
+                <li><a href="{{ url_for('main.blog') }}" class="nav-link {% if request.endpoint in ['main.blog', 'main.blog_post'] %}active{% endif %}">Blog</a></li>
                 <li><a href="{{ url_for('contact.contact') }}" class="nav-link {% if request.endpoint == 'contact.contact' %}active{% endif %}">Contact</a></li>
             </ul>
 
@@ -47,6 +48,7 @@
                 <li><a href="{{ url_for('main.portfolio') }}" class="mobile-nav-link">Portfolio</a></li>
                 <li><a href="{{ url_for('main.services') }}" class="mobile-nav-link">Services</a></li>
                 <li><a href="{{ url_for('main.about') }}" class="mobile-nav-link">About</a></li>
+                <li><a href="{{ url_for('main.blog') }}" class="mobile-nav-link">Blog</a></li>
                 <li><a href="{{ url_for('contact.contact') }}" class="mobile-nav-link">Contact</a></li>
             </ul>
         </div>
@@ -86,6 +88,7 @@
                         <li><a href="{{ url_for('main.portfolio') }}">Portfolio</a></li>
                         <li><a href="{{ url_for('main.services') }}">Services</a></li>
                         <li><a href="{{ url_for('main.about') }}">About</a></li>
+                        <li><a href="{{ url_for('main.blog') }}">Blog</a></li>
                         <li><a href="{{ url_for('contact.contact') }}">Contact</a></li>
                     </ul>
                 </div>

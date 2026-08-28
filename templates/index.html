@@ -6,9 +6,8 @@
     <div class="container">
         <div class="hero-split">
             <div class="hero-content">
-                <p class="hero-tagline">Static Designs</p>
-                <h1 class="hero-title">Beautiful Websites<br>That Drive Results</h1>
-                <p class="hero-subtitle">Custom web development with 1-on-1 collaboration. No templates, no middlemen.</p>
+                <h1 class="hero-title">Websites That Turn <span class="gradient-accent">Visitors</span> Into <span class="gradient-accent">Customers</span></h1>
+                <p class="hero-subtitle">Custom-coded sites built 1-on-1 with you. No templates, no middlemen, no surprises.</p>
                 <div class="hero-buttons">
                     <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Get Your Free Website Evaluation</a>
                     <a href="{{ url_for('main.portfolio') }}" class="btn btn-outline">See Our Work</a>
@@ -57,6 +56,18 @@
             <div class="stat-item">
                 <span class="stat-number">$0</span>
                 <span class="stat-label">Free Consultation</span>
+            </div>
+        </div>
+
+        <!-- Client Logo Strip -->
+        <div class="client-logos">
+            <p class="client-logos-label">Trusted by businesses like</p>
+            <div class="client-logos-row">
+                <img src="{{ url_for('static', filename='images/logos/mqbLogo.png') }}" alt="Moore Quality Builders" class="client-logo">
+                <img src="{{ url_for('static', filename='images/logos/equallitieLogo.png') }}" alt="Equalitie" class="client-logo">
+                <img src="{{ url_for('static', filename='images/logos/pfLogo.png') }}" alt="Pixel Flip" class="client-logo">
+                <img src="{{ url_for('static', filename='images/logos/afLogo.png') }}" alt="Amor Frames" class="client-logo">
+                <img src="{{ url_for('static', filename='images/logos/wwLogo.png') }}" alt="Client" class="client-logo">
             </div>
         </div>
 
@@ -224,15 +235,6 @@
                     <div class="portfolio-preview-info">
                         <h3>Amor Frames</h3>
                         <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/ec-preview.jpg') }}" alt="Ellie Copeland">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>Ellie Copeland</h3>
-                        <p class="tech-tags">NodeJS &bull; HTML &bull; CSS &bull; JavaScript</p>
                     </div>
                 </div>
             </div>
