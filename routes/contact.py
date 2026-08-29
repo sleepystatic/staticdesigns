@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from models import db, ContactSubmission
 from flask_mail import Message
 import re
+import threading
 
 contact_bp = Blueprint('contact', __name__)
 
@@ -57,10 +58,20 @@ def contact():
             db.session.add(submission)
             db.session.commit()
 
-            # Send email notification
-            try:
-                from app import mail
+            # Send email notification in a background thread so SMTP
+            # delays don't block the response and trigger a gunicorn timeout
+            def send_email(app, msg):
+                with app.app_context():
+                    try:
+                        from app import mail
+                        mail.send(msg)
+                        print("Email sent successfully!")
+                    except Exception as e:
+                        print(f"Email sending failed: {str(e)}")
+                        import traceback
+                        traceback.print_exc()
 
+            try:
                 msg = Message(
                     subject=f'New Contact Form Submission - {name}',
                     recipients=[current_app.config['ADMIN_EMAIL']],
@@ -79,13 +90,13 @@ Comments:
 Submitted at: {submission.submitted_at}
                     """
                 )
-                mail.send(msg)
-                print("Email sent successfully!")
+                thread = threading.Thread(
+                    target=send_email,
+                    args=(current_app._get_current_object(), msg)
+                )
+                thread.start()
             except Exception as e:
-                # Log email error but don't fail the submission
-                print(f"Email sending failed: {str(e)}")
-                import traceback
-                traceback.print_exc()
+                print(f"Email setup failed: {str(e)}")
 
             flash('Thank you for reaching out! We\'ll get back to you within 24 hours.', 'success')
             return redirect(url_for('contact.contact'))
