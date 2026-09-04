@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from models import db, ContactSubmission
 from flask_mail import Message
 import re
+import sys
 import threading
 
 contact_bp = Blueprint('contact', __name__)
@@ -58,23 +59,28 @@ def contact():
             db.session.add(submission)
             db.session.commit()
 
-            # Send email notification in a background thread so SMTP
-            # delays don't block the response and trigger a gunicorn timeout
             def send_email(app, msg):
                 with app.app_context():
                     try:
                         from app import mail
+                        cfg = app.config
+                        print(f"[MAIL DEBUG] server={cfg.get('MAIL_SERVER')}, port={cfg.get('MAIL_PORT')}, tls={cfg.get('MAIL_USE_TLS')}", flush=True)
+                        print(f"[MAIL DEBUG] username={'SET' if cfg.get('MAIL_USERNAME') else 'NOT SET'}, password={'SET' if cfg.get('MAIL_PASSWORD') else 'NOT SET'}", flush=True)
+                        print(f"[MAIL DEBUG] sender={cfg.get('MAIL_DEFAULT_SENDER')}, recipient={msg.recipients}", flush=True)
                         mail.send(msg)
-                        print("Email sent successfully!")
+                        print("[MAIL] Email sent successfully!", flush=True)
                     except Exception as e:
-                        print(f"Email sending failed: {str(e)}")
+                        print(f"[MAIL ERROR] {type(e).__name__}: {e}", flush=True)
                         import traceback
                         traceback.print_exc()
+                        sys.stderr.flush()
 
             try:
+                admin_email = current_app.config.get('ADMIN_EMAIL')
+                print(f"[MAIL] Preparing email to {admin_email}", flush=True)
                 msg = Message(
                     subject=f'New Contact Form Submission - {name}',
-                    recipients=[current_app.config['ADMIN_EMAIL']],
+                    recipients=[admin_email],
                     body=f"""
 New contact form submission from Static Designs website:
 
@@ -96,7 +102,7 @@ Submitted at: {submission.submitted_at}
                 )
                 thread.start()
             except Exception as e:
-                print(f"Email setup failed: {str(e)}")
+                print(f"[MAIL ERROR] Setup failed: {e}", flush=True)
 
             flash('Thank you for reaching out! We\'ll get back to you within 24 hours.', 'success')
             return redirect(url_for('contact.contact'))
