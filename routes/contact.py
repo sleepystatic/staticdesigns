@@ -1,24 +1,20 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from models import db, ContactSubmission
-from flask_mail import Message
 import re
-import sys
 import threading
+import resend
 
 contact_bp = Blueprint('contact', __name__)
 
 
 def is_valid_email(email):
-    """Validate email format"""
     pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
     return re.match(pattern, email) is not None
 
 
 @contact_bp.route('/contact', methods=['GET', 'POST'])
 def contact():
-    """Contact form page with submission handling"""
     if request.method == 'POST':
-        # Get form data
         name = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
         website_url = request.form.get('website_url', '').strip()
@@ -26,7 +22,6 @@ def contact():
         budget = request.form.get('budget', '').strip()
         comments = request.form.get('comments', '').strip()
 
-        # Validation
         errors = []
 
         if not name:
@@ -48,7 +43,6 @@ def contact():
             return render_template('contact.html')
 
         try:
-            # Save to database
             submission = ContactSubmission(
                 name=name,
                 email=email,
@@ -59,30 +53,28 @@ def contact():
             db.session.add(submission)
             db.session.commit()
 
-            def send_email(app, msg):
-                with app.app_context():
-                    try:
-                        from app import mail
-                        cfg = app.config
-                        print(f"[MAIL DEBUG] server={cfg.get('MAIL_SERVER')}, port={cfg.get('MAIL_PORT')}, tls={cfg.get('MAIL_USE_TLS')}", flush=True)
-                        print(f"[MAIL DEBUG] username={'SET' if cfg.get('MAIL_USERNAME') else 'NOT SET'}, password={'SET' if cfg.get('MAIL_PASSWORD') else 'NOT SET'}", flush=True)
-                        print(f"[MAIL DEBUG] sender={cfg.get('MAIL_DEFAULT_SENDER')}, recipient={msg.recipients}", flush=True)
-                        mail.send(msg)
-                        print("[MAIL] Email sent successfully!", flush=True)
-                    except Exception as e:
-                        print(f"[MAIL ERROR] {type(e).__name__}: {e}", flush=True)
-                        import traceback
-                        traceback.print_exc()
-                        sys.stderr.flush()
+            def send_email(api_key, sender, recipient, subject, body):
+                try:
+                    resend.api_key = api_key
+                    resp = resend.Emails.send({
+                        "from": sender,
+                        "to": [recipient],
+                        "subject": subject,
+                        "text": body,
+                    })
+                    print(f"[MAIL] Resend success: {resp}", flush=True)
+                except Exception as e:
+                    print(f"[MAIL ERROR] {type(e).__name__}: {e}", flush=True)
 
             try:
-                admin_email = current_app.config.get('ADMIN_EMAIL')
-                print(f"[MAIL] Preparing email to {admin_email}", flush=True)
-                msg = Message(
-                    subject=f'New Contact Form Submission - {name}',
-                    recipients=[admin_email],
-                    body=f"""
-New contact form submission from Static Designs website:
+                api_key = current_app.config.get('RESEND_API_KEY', '')
+                sender = current_app.config.get('MAIL_DEFAULT_SENDER', 'noreply@staticdesigns.dev')
+                admin_email = current_app.config.get('ADMIN_EMAIL', 't.bryan.dev@gmail.com')
+
+                print(f"[MAIL] Sending via Resend to {admin_email}", flush=True)
+                print(f"[MAIL DEBUG] api_key={'SET' if api_key else 'NOT SET'}, sender={sender}", flush=True)
+
+                body = f"""New contact form submission from Static Designs website:
 
 Name: {name}
 Email: {email}
@@ -93,12 +85,17 @@ Budget: {budget}
 Comments:
 {comments}
 
-Submitted at: {submission.submitted_at}
-                    """
-                )
+Submitted at: {submission.submitted_at}"""
+
                 thread = threading.Thread(
                     target=send_email,
-                    args=(current_app._get_current_object(), msg)
+                    args=(
+                        api_key,
+                        sender,
+                        admin_email,
+                        f'New Contact Form Submission - {name}',
+                        body,
+                    )
                 )
                 thread.start()
             except Exception as e:
