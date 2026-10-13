@@ -96,9 +96,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (heroImg && browserUrl && indicators.length) {
         const showcaseProjects = [
-            { img: '/static/images/mqb-preview.jpg', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
-            { img: '/static/images/pixelflip-preview.jpg', url: 'pixelflip.app', alt: 'Pixel Flip' },
-            { img: '/static/images/af-preview.jpg', url: 'amorframesbyluv.com', alt: 'Amor Frames' }
+            { img: '/static/images/mqb-preview', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
+            { img: '/static/images/pixelflip-landing-preview', url: 'pixelflip.app', alt: 'PixelFlip' },
+            { img: '/static/images/af-preview', url: 'amorframesbyluv.com', alt: 'Amor Frames' }
         ];
         let currentIndex = 0;
         let rotationTimer;
@@ -108,7 +108,9 @@ document.addEventListener('DOMContentLoaded', function() {
             heroImg.classList.add('fade-out');
             setTimeout(() => {
                 currentIndex = index;
-                heroImg.src = showcaseProjects[index].img;
+                const base = showcaseProjects[index].img;
+                heroImg.srcset = `${base}-720.webp 720w, ${base}-1200.webp 1200w`;
+                heroImg.src = `${base}-1200.webp`;
                 heroImg.alt = showcaseProjects[index].alt + ' — a Static Designs project';
                 browserUrl.textContent = showcaseProjects[index].url;
                 heroImg.classList.remove('fade-out');

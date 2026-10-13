@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import screenshot %}
 
 {% block content %}
 <!-- Hero Section — Split Layout -->
@@ -22,10 +23,10 @@
                             <span class="browser-dot yellow"></span>
                             <span class="browser-dot green"></span>
                         </div>
-                        <div class="browser-url"><span id="browserUrlText">moorequalitybuilders.com</span></div>
+                        <div class="browser-url"><span id="browserUrlText">moore-qualitybuilders.com</span></div>
                     </div>
                     <div class="browser-content">
-                        <img id="heroShowcaseImg" src="{{ url_for('static', filename='images/mqb-preview.jpg') }}" alt="Moore Quality Builders — a Static Designs project">
+                        {{ screenshot('mqb-preview', 'Moore Quality Builders — a Static Designs project', '(max-width: 560px) 92vw, 520px', eager=true, id='heroShowcaseImg') }}
                     </div>
                     <div class="browser-indicators">
                         <button class="indicator-bar active" data-index="0" aria-label="Show Moore Quality Builders"></button>
@@ -63,11 +64,11 @@
         <div class="client-logos">
             <p class="client-logos-label">Trusted by businesses like</p>
             <div class="client-logos-row">
-                <img src="{{ url_for('static', filename='images/logos/mqbLogo.png') }}" alt="Moore Quality Builders" class="client-logo">
-                <img src="{{ url_for('static', filename='images/logos/equallitieLogo.png') }}" alt="Equalitie" class="client-logo">
-                <img src="{{ url_for('static', filename='images/logos/pfLogo.png') }}" alt="Pixel Flip" class="client-logo">
-                <img src="{{ url_for('static', filename='images/logos/afLogo.png') }}" alt="Amor Frames" class="client-logo">
-                <img src="{{ url_for('static', filename='images/logos/wwLogo.png') }}" alt="Client" class="client-logo">
+                <img src="{{ url_for('static', filename='images/logos/mqbLogo.webp') }}" alt="Moore Quality Builders" class="client-logo" width="140" height="96" loading="lazy" decoding="async">
+                <img src="{{ url_for('static', filename='images/logos/equalitieLogo.webp') }}" alt="Equalitie" class="client-logo" width="96" height="96" loading="lazy" decoding="async">
+                <img src="{{ url_for('static', filename='images/logos/pfLogo.webp') }}" alt="Pixel Flip" class="client-logo" width="96" height="96" loading="lazy" decoding="async">
+                <img src="{{ url_for('static', filename='images/logos/afLogo.webp') }}" alt="Amor Frames" class="client-logo" width="96" height="96" loading="lazy" decoding="async">
+                <img src="{{ url_for('static', filename='images/logos/wwLogo.webp') }}" alt="Wash Works" class="client-logo" width="164" height="96" loading="lazy" decoding="async">
             </div>
         </div>
 
@@ -105,7 +106,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
                 </div>
                 <h3>Custom Web Design</h3>
-                <p>Hand-coded websites built from scratch — no WordPress templates, no page builders. Your site, your way.</p>
+                <p>Custom-coded websites built from scratch — no WordPress templates, no page builders. Your site, your way.</p>
             </div>
 
             <div class="what-we-do-card">
@@ -158,7 +159,7 @@
             <div class="comparison-column highlight">
                 <h3>Static Designs</h3>
                 <ul class="comparison-list positive">
-                    <li>$499 - $1,999 pricing</li>
+                    <li>$0 down, or from $499.99 upfront</li>
                     <li>Direct 1-on-1 collaboration</li>
                     <li>100% custom designs</li>
                     <li>24-hour response time</li>
@@ -178,65 +179,17 @@
             <button class="carousel-btn prev" id="carouselPrev" aria-label="Previous project">&#8249;</button>
 
             <div class="portfolio-carousel-track">
-                <div class="portfolio-preview-item">
+                {% for project in projects %}
+                <a class="portfolio-preview-item" href="{{ url_for('main.project', slug=project.slug) }}">
                     <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/equalitie-preview.jpg') }}" alt="Equalitie Official">
+                        {{ screenshot(project.image, project.name, '400px') }}
                     </div>
                     <div class="portfolio-preview-info">
-                        <h3>Equalitie Official</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
+                        <h3>{{ project.name }}</h3>
+                        <p class="tech-tags">{{ project.stack | join(' • ') }}</p>
                     </div>
-                </div>
-
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/mqb-preview.jpg') }}" alt="Moore Quality Builders">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>Moore Quality Builders</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/gbr-preview.jpg') }}" alt="Gameboy Retreat">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>Gameboy Retreat</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/sleepystatic-preview.jpg') }}" alt="Sleepy Static">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>Sleepy Static</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/pixelflip-preview.jpg') }}" alt="Pixel Flip">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>PixelFlip</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
-
-                <div class="portfolio-preview-item">
-                    <div class="portfolio-preview-image">
-                        <img src="{{ url_for('static', filename='images/af-preview.jpg') }}" alt="Amor Frames">
-                    </div>
-                    <div class="portfolio-preview-info">
-                        <h3>Amor Frames</h3>
-                        <p class="tech-tags">HTML &bull; CSS &bull; JavaScript &bull; Python &bull; Flask</p>
-                    </div>
-                </div>
+                </a>
+                {% endfor %}
             </div>
 
             <button class="carousel-btn next" id="carouselNext" aria-label="Next project">&#8250;</button>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Services & Pricing - Static Designs{% endblock %}
-{% block description %}Competitive web development pricing with three service tiers starting at $499. Custom packages, transparent pricing, and 1-on-1 collaboration.{% endblock %}
+{% block description %}Custom websites from $499.99 upfront, or $0 down with monthly payments from $99.99. Transparent pricing and 1-on-1 collaboration.{% endblock %}
 
 {% block content %}
 <!-- Services Header -->
@@ -16,13 +16,15 @@
 <section class="pricing-section section-padding">
     <div class="container">
         <h2 class="section-title">Choose Your Package</h2>
-        
+        <p class="section-subtitle">Pay upfront, or pay over 6 months with $0 down. Same site either way.</p>
+
         <div class="pricing-grid">
             <!-- Basic Package -->
             <div class="pricing-card">
                 <div class="pricing-header">
                     <h3 class="pricing-title">Basic</h3>
-                    <p class="pricing-price">$499</p>
+                    <p class="pricing-price">$499.99</p>
+                    <p class="pricing-monthly">or $0 down, $99.99/mo for 6 months</p>
                     <p class="pricing-description">Perfect for personal sites and small businesses</p>
                 </div>
                 <ul class="pricing-features">
@@ -31,7 +33,7 @@
                     <li><span class="feature-icon">✓</span> Contact Form</li>
                     <li><span class="feature-icon">✓</span> 2 Rounds of Revisions</li>
                     <li><span class="feature-icon">✓</span> 2 Week Delivery</li>
-                    <li><span class="feature-icon">✓</span> Additional Pages: $100 each</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $99.99 each</li>
                 </ul>
                 <a href="{{ url_for('contact.contact') }}" class="btn btn-outline">Get Started</a>
             </div>
@@ -41,7 +43,8 @@
                 <div class="pricing-badge">Most Popular</div>
                 <div class="pricing-header">
                     <h3 class="pricing-title">Standard</h3>
-                    <p class="pricing-price">$999</p>
+                    <p class="pricing-price">$999.99</p>
+                    <p class="pricing-monthly">or $0 down, $199.99/mo for 6 months</p>
                     <p class="pricing-description">Ideal for growing businesses with more content</p>
                 </div>
                 <ul class="pricing-features">
@@ -51,7 +54,7 @@
                     <li><span class="feature-icon">✓</span> Basic SEO Optimization</li>
                     <li><span class="feature-icon">✓</span> 3 Rounds of Revisions</li>
                     <li><span class="feature-icon">✓</span> 3 Week Delivery</li>
-                    <li><span class="feature-icon">✓</span> Additional Pages: $100 each</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $99.99 each</li>
                 </ul>
                 <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get Started</a>
             </div>
@@ -60,7 +63,8 @@
             <div class="pricing-card">
                 <div class="pricing-header">
                     <h3 class="pricing-title">Premium</h3>
-                    <p class="pricing-price">$1,999</p>
+                    <p class="pricing-price">$1,999.99</p>
+                    <p class="pricing-monthly">or $0 down, $399.99/mo for 6 months</p>
                     <p class="pricing-description">Complete solution for established businesses</p>
                 </div>
                 <ul class="pricing-features">
@@ -70,11 +74,13 @@
                     <li><span class="feature-icon">✓</span> Advanced SEO</li>
                     <li><span class="feature-icon">✓</span> 6 Rounds of Revisions</li>
                     <li><span class="feature-icon">✓</span> 1 Month Delivery</li>
-                    <li><span class="feature-icon">✓</span> Additional Pages: $100+ each (based on complexity)</li>
+                    <li><span class="feature-icon">✓</span> Additional Pages: $99.99+ each (based on complexity)</li>
                 </ul>
                 <a href="{{ url_for('contact.contact') }}" class="btn btn-outline">Get Started</a>
             </div>
         </div>
+
+        <p class="pricing-note">Monthly plans include hosting for all 6 payments. After that, or right after launch if you pay upfront, hosting is $24.99/mo, or $49.99/mo with maintenance.</p>
     </div>
 </section>
 
@@ -87,7 +93,7 @@
         <div class="addons-grid">
             <div class="addon-card">
                 <h3>Extra Pages</h3>
-                <p class="addon-price">$99/page</p>
+                <p class="addon-price">$99.99/page</p>
                 <p>Need more than what's included? Add additional pages to any package.</p>
             </div>
             
@@ -105,14 +111,14 @@
             
             <div class="addon-card">
                 <h3>Hosting Only</h3>
-                <p class="addon-price">$49/month</p>
-                <p>Reliable hosting with SSL, automatic backups, and 99.9% uptime.</p>
+                <p class="addon-price">$24.99/month</p>
+                <p>Reliable hosting with SSL, automatic backups, and 99.9% uptime. Content updates start at $24.99 per request.</p>
             </div>
             
             <div class="addon-card">
                 <h3>Hosting + Maintenance</h3>
-                <p class="addon-price">$99/month</p>
-                <p>Hosting plus ongoing updates, security monitoring, and technical support.</p>
+                <p class="addon-price">$49.99/month</p>
+                <p>Hosting plus content updates (text, photos, hours, prices), security monitoring, and replies within 24 hours. New features are quoted before work starts.</p>
             </div>
             
             <div class="addon-card">
@@ -143,7 +149,7 @@
                 <tbody>
                     <tr>
                         <td class="feature-name">Starting Price</td>
-                        <td class="highlight-column"><strong>$499 - $1,999</strong></td>
+                        <td class="highlight-column"><strong>$499.99 - $1,999.99</strong><br><small>or $0 down from $99.99/mo</small></td>
                         <td>$3,000 - $10,000+</td>
                         <td>$200 - $1,500</td>
                     </tr>

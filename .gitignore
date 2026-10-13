@@ -48,3 +48,5 @@ Thumbs.db
 
 # Render
 .render/
+# Original images; only the .webp copies made by scripts/optimize_images.py get deployed
+image-sources/

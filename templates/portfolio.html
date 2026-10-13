@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import screenshot %}
 
 {% block title %}Portfolio - Static Designs{% endblock %}
 {% block description %}Explore our portfolio of custom web development projects featuring e-commerce sites, business websites, and more.{% endblock %}
@@ -17,18 +18,14 @@
     <div class="container">
         <div class="portfolio-grid">
             {% for project in projects %}
-            <a href="{{ project.url }}" target="_blank" rel="noopener noreferrer" class="portfolio-item">
+            <a href="{{ url_for('main.project', slug=project.slug) }}" class="portfolio-item">
                 <div class="portfolio-item-image">
-                    <img src="{{ url_for('static', filename='images/' + project.image) }}" alt="{{ project.name }} website screenshot">
+                    {{ screenshot(project.image, project.name ~ ' website screenshot', '600px', eager=loop.first) }}
                 </div>
                 <div class="portfolio-item-overlay">
                     <div class="portfolio-item-content">
                         <h3 class="portfolio-item-title">{{ project.name }}</h3>
-                        <p class="portfolio-item-tech">
-                            {% for tech in project.technologies %}
-                                {{ tech }}{% if not loop.last %} • {% endif %}
-                            {% endfor %}
-                        </p>
+                        <p class="portfolio-item-tech">{{ project.stack | join(' • ') }}</p>
                     </div>
                 </div>
             </a>

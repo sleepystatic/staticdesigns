@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% from "macros.html" import screenshot %}
+
+{% block title %}{{ project.name }} - Static Designs Portfolio{% endblock %}
+{% block description %}{{ project.summary }}{% endblock %}
+
+{% block content %}
+<section class="page-header project-header">
+    <div class="container">
+        <a class="project-back" href="{{ url_for('main.portfolio') }}">&larr; All projects</a>
+        <p class="project-label">{{ 'Our own product' if project.own_project else 'Client project' }}</p>
+        <h1 class="page-title">{{ project.name }}</h1>
+        <p class="page-subtitle">{{ project.summary }}</p>
+        <a href="{{ project.url }}" class="btn btn-primary btn-large" target="_blank" rel="noopener">Visit live site &#8599;</a>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container project-showcase">
+        <div class="browser-frame project-browser">
+            <div class="browser-bar">
+                <div class="browser-dots">
+                    <span class="browser-dot red"></span>
+                    <span class="browser-dot yellow"></span>
+                    <span class="browser-dot green"></span>
+                </div>
+                <div class="browser-url"><span>{{ project.url | replace('https://', '') }}</span></div>
+            </div>
+            <div class="browser-content">
+                {{ screenshot(project.image, project.name ~ ' on a desktop screen', '(max-width: 767px) 92vw, 860px', eager=true) }}
+            </div>
+        </div>
+        <div class="phone-frame">
+            <img src="{{ url_for('static', filename='images/' ~ project.mobile_image ~ '.webp') }}" width="360" height="780" alt="{{ project.name }} on a phone" loading="lazy" decoding="async">
+        </div>
+    </div>
+</section>
+
+<section class="section-padding bg-light">
+    <div class="container project-body">
+        <div class="project-story">
+            <h2>About the project</h2>
+            {% for paragraph in project.paragraphs %}
+            <p>{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+
+        <aside class="project-facts">
+            {% if project.pagespeed %}
+            <div class="project-score">
+                <span class="project-score-number">{{ project.pagespeed }}</span>
+                <span class="project-score-label">Mobile speed score out of 100<small>Google Lighthouse, measured {{ measured }}</small></span>
+            </div>
+            {% endif %}
+
+            <h3>Features</h3>
+            <ul class="project-features">
+                {% for feature in project.features %}
+                <li>{{ feature }}</li>
+                {% endfor %}
+            </ul>
+
+            <h3>Built with</h3>
+            <ul class="project-stack">
+                {% for tech in project.stack %}
+                <li>{{ tech }}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+    </div>
+</section>
+
+<section class="section-padding">
+    <nav class="container project-nav" aria-label="More projects">
+        <a class="project-nav-link" href="{{ url_for('main.project', slug=prev_project.slug) }}">
+            <span class="project-nav-label">&larr; Previous project</span>
+            <span class="project-nav-name">{{ prev_project.name }}</span>
+        </a>
+        <a class="project-nav-link next" href="{{ url_for('main.project', slug=next_project.slug) }}">
+            <span class="project-nav-label">Next project &rarr;</span>
+            <span class="project-nav-name">{{ next_project.name }}</span>
+        </a>
+    </nav>
+</section>
+
+<section class="cta-section section-padding">
+    <div class="container">
+        <h2 class="cta-title">Want a site like this?</h2>
+        <p class="cta-subtitle">Pay upfront or start with $0 down. We'll begin with a free evaluation of where your business stands online.</p>
+        <a href="{{ url_for('contact.contact') }}" class="btn btn-cta-outline btn-large">Get Your Free Website Evaluation</a>
+    </div>
+</section>
+{% endblock %}

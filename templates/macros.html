@@ -1,0 +1,4 @@
+{# Screenshot made by scripts/optimize_images.py; sizes = how wide the image renders in CSS pixels. #}
+{% macro screenshot(base, alt, sizes, eager=false, id=none) -%}
+<img{% if id %} id="{{ id }}"{% endif %} src="{{ url_for('static', filename='images/' ~ base ~ '-1200.webp') }}" srcset="{{ url_for('static', filename='images/' ~ base ~ '-720.webp') }} 720w, {{ url_for('static', filename='images/' ~ base ~ '-1200.webp') }} 1200w" sizes="{{ sizes }}" width="1200" height="600" alt="{{ alt }}"{% if eager %} fetchpriority="high"{% else %} loading="lazy" decoding="async"{% endif %}>
+{%- endmacro %}

@@ -138,7 +138,7 @@ Agencies charge $5,000-$10,000+ for a WordPress site that loads in 6 seconds and
 
 I build custom-coded websites starting at $499 because small businesses deserve better than a template with their logo on it.
 
-Every site I build is hand-coded, fast, mobile-friendly, and actually designed to bring in customers — not just look pretty.
+Every site I build is custom-coded, fast, mobile-friendly, and actually designed to bring in customers — not just look pretty.
 
 That's the difference.
 
