@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot %}
+{% from "macros.html" import screenshot, speed_badge %}
 
 {% block content %}
 <!-- Hero Section — Split Layout -->
@@ -183,6 +183,7 @@
                 <a class="portfolio-preview-item" href="{{ url_for('main.project', slug=project.slug) }}">
                     <div class="portfolio-preview-image">
                         {{ screenshot(project.image, project.name, '400px') }}
+                        {{ speed_badge(project) }}
                     </div>
                     <div class="portfolio-preview-info">
                         <h3>{{ project.name }}</h3>
@@ -201,42 +202,7 @@
     </div>
 </section>
 
-<!-- Testimonials
-<section class="testimonials section-padding bg-light">
-    <div class="container">
-        <h2 class="section-title">What Clients Say</h2>
-
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="testimonial-text">"Working with Static Designs was a breeze. The 1-on-1 collaboration meant my vision came to life exactly as I imagined. Great value for the quality delivered."</p>
-                <div class="testimonial-author">
-                    <p class="author-name">Sarah Johnson</p>
-                    <p class="author-title">Business Owner</p>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="testimonial-text">"Professional, responsive, and incredibly talented. The pricing was fair and the final product exceeded my expectations. Highly recommend!"</p>
-                <div class="testimonial-author">
-                    <p class="author-name">Michael Chen</p>
-                    <p class="author-title">Startup Founder</p>
-                </div>
-            </div>
-
-            <div class="testimonial-card">
-                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="testimonial-text">"The attention to detail and willingness to iterate until perfect made all the difference. Best web developer I've worked with."</p>
-                <div class="testimonial-author">
-                    <p class="author-name">Emily Rodriguez</p>
-                    <p class="author-title">Creative Director</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
--->
+{# Testimonials: add a "What Clients Say" section here once real client quotes are in (styles: .testimonials in style.css). #}
 
 <!-- Final CTA -->
 <section class="cta-section section-padding">

@@ -11,6 +11,19 @@
 
     <title>{% block title %}Static Designs - Professional Web Development{% endblock %}</title>
     <meta name="description" content="{% block description %}Static Designs offers custom web development services with competitive pricing and personalized 1 on 1 collaboration.{% endblock %}">
+    <link rel="canonical" href="{{ config.SITE_URL }}{{ request.path }}">
+
+    <!-- Link previews when the site is shared in texts and on social media -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Static Designs">
+    <meta property="og:title" content="{{ self.title() | trim }}">
+    <meta property="og:description" content="{{ self.description() | trim }}">
+    <meta property="og:url" content="{{ config.SITE_URL }}{{ request.path }}">
+    <meta property="og:image" content="{{ config.SITE_URL }}{{ url_for('static', filename='images/share-card.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Static Designs: websites that turn visitors into customers">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -21,7 +34,7 @@
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <a href="{{ url_for('main.home') }}" class="logo">
-                <img class="logo-image" src="{{ url_for('static', filename='images/staticdesignslogo.webp') }}" alt="Static Designs" width="320" height="180">
+                <img class="logo-image" src="{{ url_for('static', filename='images/staticdesignslogo.webp') }}" alt="Static Designs" width="266" height="150">
             </a>
 
             <ul class="nav-links">
@@ -98,7 +111,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Static Designs. All rights reserved.</p>
+                <p>&copy; 2026 Static Designs. All rights reserved. <span aria-hidden="true">&middot;</span> <a href="{{ url_for('main.privacy') }}">Privacy Policy</a></p>
             </div>
         </div>
     </footer>

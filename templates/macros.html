@@ -2,3 +2,26 @@
 {% macro screenshot(base, alt, sizes, eager=false, id=none) -%}
 <img{% if id %} id="{{ id }}"{% endif %} src="{{ url_for('static', filename='images/' ~ base ~ '-1200.webp') }}" srcset="{{ url_for('static', filename='images/' ~ base ~ '-720.webp') }} 720w, {{ url_for('static', filename='images/' ~ base ~ '-1200.webp') }} 1200w" sizes="{{ sizes }}" width="1200" height="600" alt="{{ alt }}"{% if eager %} fetchpriority="high"{% else %} loading="lazy" decoding="async"{% endif %}>
 {%- endmacro %}
+
+{# PageSpeed meter: takes pagespeed_meter() from pagespeed.py. labels=true adds FCP/LCP/TBT/CLS/SI around the ring. #}
+{% macro speed_meter(meter, labels=false) -%}
+<svg class="speed-meter speed-{{ meter.rating }}" viewBox="{{ '0 0 120 120' if labels else '16 16 88 88' }}" role="img" aria-label="Desktop PageSpeed score: {{ meter.score }} out of 100">
+    <circle class="speed-meter-face" cx="60" cy="60" r="34"/>
+    {%- for segment in meter.segments %}
+    <path class="speed-meter-track" d="{{ segment.track }}"/>
+    {%- if segment.fill %}
+    <path class="speed-meter-fill speed-{{ segment.rating }}" d="{{ segment.fill }}"/>
+    {%- endif %}
+    {%- if labels %}
+    <text class="speed-meter-label speed-{{ segment.rating }}" x="{{ segment.label_x }}" y="{{ segment.label_y }}">{{ segment.abbr }}</text>
+    {%- endif %}
+    {%- endfor %}
+    <text class="speed-meter-score" x="60" y="60">{{ meter.score }}</text>
+</svg>
+{%- endmacro %}
+
+{# Small meter for a project card's screenshot corner; renders nothing when the project has no score to show. #}
+{% macro speed_badge(project) -%}
+{%- set meter = pagespeed_meter(project.pagespeed) -%}
+{%- if meter %}<span class="speed-badge">{{ speed_meter(meter) }}</span>{% endif -%}
+{%- endmacro %}

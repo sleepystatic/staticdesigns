@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template, abort, url_for, Response
 from projects import PROJECTS, PAGESPEED_MEASURED
+from pagespeed import pagespeed_meter
 
 main_bp = Blueprint('main', __name__)
+main_bp.add_app_template_global(pagespeed_meter)
 
 BLOG_POSTS = [
     {
@@ -61,3 +63,23 @@ def blog_post(slug):
     if not post:
         abort(404)
     return render_template(post['template'], post=post)
+
+@main_bp.route('/privacy')
+def privacy():
+    """Privacy policy, linked from the footer and the contact form"""
+    return render_template('privacy.html')
+
+@main_bp.route('/robots.txt')
+def robots():
+    """Lets search engines crawl everything and points them to the sitemap"""
+    return Response(render_template('robots.txt'), mimetype='text/plain')
+
+@main_bp.route('/sitemap.xml')
+def sitemap():
+    """Every public page, so search engines find each project page and blog post"""
+    paths = [url_for('main.home'), url_for('main.portfolio')]
+    paths += [url_for('main.project', slug=p['slug']) for p in PROJECTS]
+    paths += [url_for('main.services'), url_for('main.about'), url_for('main.blog')]
+    paths += [url_for('main.blog_post', slug=p['slug']) for p in BLOG_POSTS]
+    paths += [url_for('contact.contact'), url_for('main.privacy')]
+    return Response(render_template('sitemap.xml', paths=paths), mimetype='application/xml')

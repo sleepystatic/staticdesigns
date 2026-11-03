@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot %}
+{% from "macros.html" import screenshot, speed_badge %}
 
 {% block title %}Portfolio - Static Designs{% endblock %}
 {% block description %}Explore our portfolio of custom web development projects featuring e-commerce sites, business websites, and more.{% endblock %}
@@ -24,10 +24,11 @@
                 </div>
                 <div class="portfolio-item-overlay">
                     <div class="portfolio-item-content">
-                        <h3 class="portfolio-item-title">{{ project.name }}</h3>
+                        <h2 class="portfolio-item-title">{{ project.name }}</h2>
                         <p class="portfolio-item-tech">{{ project.stack | join(' • ') }}</p>
                     </div>
                 </div>
+                {{ speed_badge(project) }}
             </a>
             {% endfor %}
         </div>

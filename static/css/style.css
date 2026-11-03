@@ -226,7 +226,7 @@ p {
 }
 
 .logo-image {
-    height: 60px;
+    height: 75px;
     width: auto;
 }
 
@@ -1007,6 +1007,7 @@ p {
 }
 
 .portfolio-preview-image {
+    position: relative;
     border-radius: var(--border-radius);
     overflow: hidden;
     margin-bottom: var(--spacing-sm);
@@ -1644,6 +1645,12 @@ p {
     margin-top: var(--spacing-sm);
 }
 
+.form-footer-text a {
+    color: var(--secondary-violet);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 @media (min-width: 768px) {
     .contact-wrapper {
         grid-template-columns: 1fr 1.5fr;
@@ -1858,6 +1865,47 @@ p {
     color: var(--text-muted);
 }
 
+.footer-bottom a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: var(--transition-fast);
+}
+
+.footer-bottom a:hover {
+    color: var(--primary-magenta);
+}
+
+/* ============================================
+   PRIVACY POLICY
+   ============================================ */
+.legal-body {
+    max-width: 760px;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+}
+
+.legal-body h2 {
+    font-size: 1.5rem;
+    margin-top: var(--spacing-md);
+}
+
+.legal-body ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.legal-body li {
+    margin-bottom: 0.5rem;
+}
+
+.legal-body a {
+    color: var(--secondary-violet);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
 /* ============================================
    RESPONSIVE TYPOGRAPHY
    ============================================ */
@@ -1996,7 +2044,7 @@ p {
 .blog-back-link {
     display: inline-block;
     font-size: 0.875rem;
-    color: var(--primary-magenta);
+    color: var(--secondary-violet);
     text-decoration: none;
     margin-bottom: 1.5rem;
     transition: var(--transition-fast);
@@ -2218,35 +2266,133 @@ p {
 }
 
 .project-score {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding-bottom: var(--spacing-sm);
-    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
     border-bottom: 1px solid var(--border-subtle);
 }
 
-.project-score-number {
-    font-size: 3rem;
-    font-weight: 800;
-    line-height: 1;
+.project-score .speed-meter {
+    max-width: 180px;
+    margin: 0 auto var(--spacing-sm);
+}
+
+.speed-metrics li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.95rem;
+}
+
+/* Google's shapes: a circle when it's good, a square when it needs work, a triangle when it's poor */
+.speed-metrics li::before {
+    content: "";
+    flex: none;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--speed);
+}
+
+.speed-metrics .speed-average::before {
+    border-radius: 0;
+}
+
+.speed-metrics .speed-fail::before {
+    border-radius: 0;
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.speed-metrics span {
+    margin-left: auto;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--speed);
 }
 
-.project-score-label {
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--text-heading);
-}
-
-.project-score-label small {
-    display: block;
-    font-weight: 400;
+.project-score-source {
+    margin-top: var(--spacing-sm);
+    font-size: 0.85rem;
     color: var(--text-muted);
+}
+
+.project-score-source a {
+    color: var(--secondary-violet);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ============================================
+   PAGESPEED METER (macros.html speed_meter)
+   ============================================ */
+.speed-pass {
+    --speed: #0c6;
+    --speed-tint: rgba(0, 204, 102, 0.12);
+}
+
+.speed-average {
+    --speed: #fa3;
+    --speed-tint: rgba(255, 170, 51, 0.12);
+}
+
+.speed-fail {
+    --speed: #ff4e42;
+    --speed-tint: rgba(255, 78, 66, 0.12);
+}
+
+.speed-meter {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Roboto Mono', monospace;
+}
+
+.speed-meter path {
+    fill: none;
+    stroke-width: 6;
+}
+
+.speed-meter-track {
+    stroke: rgba(255, 255, 255, 0.12);
+}
+
+.speed-meter-fill {
+    stroke: var(--speed);
+}
+
+.speed-meter-face {
+    fill: var(--speed-tint);
+}
+
+.speed-meter text {
+    fill: var(--speed);
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+.speed-meter-score {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.speed-meter-label {
+    font-size: 8px;
+    font-weight: 600;
+}
+
+/* The small meter in a project card's screenshot corner */
+.speed-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 3.5rem;
+    padding: 0.25rem;
+    border-radius: 50%;
+    background: rgba(22, 22, 34, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
 }
 
 .project-features {

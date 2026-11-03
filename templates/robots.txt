@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: {{ config.SITE_URL }}{{ url_for('main.sitemap') }}

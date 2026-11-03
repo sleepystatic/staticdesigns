@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot %}
+{% from "macros.html" import screenshot, speed_meter %}
 
 {% block title %}{{ project.name }} - Static Designs Portfolio{% endblock %}
 {% block description %}{{ project.summary }}{% endblock %}
@@ -46,10 +46,17 @@
         </div>
 
         <aside class="project-facts">
-            {% if project.pagespeed %}
+            {% set meter = pagespeed_meter(project.pagespeed, project.url) %}
+            {% if meter %}
             <div class="project-score">
-                <span class="project-score-number">{{ project.pagespeed }}</span>
-                <span class="project-score-label">Mobile speed score out of 100<small>Google Lighthouse, measured {{ measured }}</small></span>
+                <h3>Desktop PageSpeed</h3>
+                {{ speed_meter(meter, labels=true) }}
+                <ul class="speed-metrics">
+                    {% for segment in meter.segments %}
+                    <li class="speed-{{ segment.rating }}">{{ segment.name }}<span>{{ segment.value }}</span></li>
+                    {% endfor %}
+                </ul>
+                <p class="project-score-source">Google PageSpeed Insights (desktop), measured {{ measured }}. <a href="{{ meter.report_url }}" target="_blank" rel="noopener">Run the test yourself &#8599;</a></p>
             </div>
             {% endif %}
 

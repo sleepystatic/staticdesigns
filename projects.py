@@ -1,6 +1,11 @@
-"""Portfolio projects: homepage Recent Work, the /portfolio grid, and each /portfolio/<slug> page, in this order."""
+"""Portfolio projects: homepage Recent Work, the /portfolio grid, and each /portfolio/<slug> page, in this order.
+
+pagespeed: copy a run from pagespeed.web.dev's Desktop tab. score is the Performance number; fcp, lcp, and si are
+in seconds, tbt in milliseconds, and cls as shown. Projects scoring below PAGESPEED_MIN_SHOWN (or None) get no meter.
+"""
 
 PAGESPEED_MEASURED = 'October 2026'
+PAGESPEED_MIN_SHOWN = 90
 
 PROJECTS = [
     {
@@ -25,7 +30,7 @@ PROJECTS = [
             'Resources blog',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 99, 'fcp': 0.7, 'lcp': 0.7, 'tbt': 0, 'cls': 0.025, 'si': 0.8},
     },
     {
         'slug': 'equalitie',
@@ -49,7 +54,7 @@ PROJECTS = [
             'Light and dark mode',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 99, 'fcp': 0.2, 'lcp': 0.8, 'tbt': 90, 'cls': 0, 'si': 0.4},
     },
     {
         'slug': 'gameboy-retreat',
@@ -72,7 +77,7 @@ PROJECTS = [
             '30-day warranty, testing, and 24-hour replies shown up front',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 100, 'fcp': 0.2, 'lcp': 0.3, 'tbt': 0, 'cls': 0, 'si': 0.4},
     },
     {
         'slug': 'wash-works',
@@ -96,7 +101,7 @@ PROJECTS = [
             '"Request service" path from the homepage',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 100, 'fcp': 0.7, 'lcp': 0.7, 'tbt': 0, 'cls': 0.009, 'si': 0.7},
     },
     {
         'slug': 'amor-frames',
@@ -119,7 +124,7 @@ PROJECTS = [
             'Instagram and Facebook links',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 99, 'fcp': 0.7, 'lcp': 0.8, 'tbt': 0, 'cls': 0, 'si': 0.7},
     },
     {
         'slug': 'pixelflip-landing',
@@ -142,7 +147,7 @@ PROJECTS = [
             'FAQ, blog, and legal pages',
         ],
         'stack': ['React', 'Node.js', 'JavaScript', 'CSS'],
-        'pagespeed': None,
+        'pagespeed': {'score': 99, 'fcp': 0.2, 'lcp': 0.6, 'tbt': 0, 'cls': 0.075, 'si': 0.3},
     },
     {
         'slug': 'pixelflip-dashboard',
@@ -166,6 +171,6 @@ PROJECTS = [
             'Built-in help assistant',
         ],
         'stack': ['HTML', 'CSS', 'JavaScript', 'Python', 'Flask'],
-        'pagespeed': None,
+        'pagespeed': {'score': 100, 'fcp': 0.2, 'lcp': 0.5, 'tbt': 60, 'cls': 0, 'si': 0.4},
     },
 ]

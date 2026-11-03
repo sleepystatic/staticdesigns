@@ -4,6 +4,9 @@ import os
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
 
+    # Public address used in link previews, the canonical tag, robots.txt, and the sitemap
+    SITE_URL = os.environ.get('SITE_URL', 'https://staticdesigns.dev')
+
     # Use PostgreSQL in production, SQLite in development
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///static_designs.db'
 

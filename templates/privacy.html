@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy - Static Designs{% endblock %}
+{% block description %}How Static Designs collects, uses, and protects the information you share through staticdesigns.dev.{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <div class="container">
+        <h1 class="page-title">Privacy Policy</h1>
+        <p class="page-subtitle">Last updated October 20, 2026</p>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container legal-body">
+        <p class="lead-text">Static Designs builds websites for small businesses. This page explains what information we collect through staticdesigns.dev, how we use it, and the choices you have.</p>
+
+        <h2>What we collect</h2>
+        <ul>
+            <li><strong>When you contact us:</strong> the name, email address, current website, project type, budget, and message you enter in our contact form.</li>
+            <li><strong>When you visit:</strong> like most websites, our hosting provider automatically logs basic technical details for each visit, such as your IP address, browser type, and the pages requested. We don't use analytics or advertising trackers.</li>
+        </ul>
+
+        <h2>How we use it</h2>
+        <p>We use the information you send us only to reply to your inquiry, prepare your free website evaluation or quote, and keep a record of our conversation. We don't sell or rent your information, and we don't use it for advertising.</p>
+
+        <h2>Who we share it with</h2>
+        <p>We share information only with the service providers that run this website for us, and only so they can do that work:</p>
+        <ul>
+            <li>Our hosting providers, which run this website and store contact form messages.</li>
+            <li>Resend, which delivers contact form messages to our inbox, and our email provider, which stores them there.</li>
+            <li>Google Fonts, which supplies this site's typeface. Your browser requests the font from Google, so Google receives your IP address.</li>
+        </ul>
+        <p>We may also share information if the law requires it.</p>
+
+        <h2>Cookies</h2>
+        <p>We don't use advertising or analytics cookies. When you send the contact form, the site sets one temporary cookie so it can show you a confirmation message. It's deleted when you close your browser.</p>
+
+        <h2>Do Not Track</h2>
+        <p>Some browsers can send a "Do Not Track" signal. We don't track visitors across other websites or let third parties do so on ours, so the signal doesn't change how this site works.</p>
+
+        <h2>How long we keep it</h2>
+        <p>We keep contact form messages as long as we need them to work with you and keep business records. You can ask us to delete yours at any time.</p>
+
+        <h2>Your choices</h2>
+        <p>You can ask what information we have about you, ask us to correct it, or ask us to delete it. Send us a message through our <a href="{{ url_for('contact.contact') }}">contact page</a> and we'll reply within 24 hours.</p>
+
+        <h2>Security</h2>
+        <p>This site uses HTTPS, and only the people who run Static Designs can read contact form messages. No system is perfectly secure, but we take reasonable steps to protect your information.</p>
+
+        <h2>Children</h2>
+        <p>This site is meant for businesses and isn't directed to children under 13. We don't knowingly collect information from children.</p>
+
+        <h2>Changes to this policy</h2>
+        <p>If we change this policy, we'll update this page and the date at the top.</p>
+
+        <h2>Contact us</h2>
+        <p>Questions about this policy? Reach us through our <a href="{{ url_for('contact.contact') }}">contact page</a>. Static Designs is based in Stockton, California.</p>
+    </div>
+</section>
+{% endblock %}
