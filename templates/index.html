@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot, speed_badge %}
+{% from "macros.html" import screenshot, speed_badge, project_type %}
 
 {% block content %}
 <!-- Hero Section — Split Layout -->
@@ -7,11 +7,11 @@
     <div class="container">
         <div class="hero-split">
             <div class="hero-content">
-                <h1 class="hero-title">Websites That Turn <span class="gradient-accent">Visitors</span> Into <span class="gradient-accent">Customers</span></h1>
-                <p class="hero-subtitle">Custom-coded sites built 1-on-1 with you. No templates, no middlemen, no surprises.</p>
+                <h1 class="hero-title"><span class="hero-title-line">Bring the idea.</span> <span class="hero-title-line gradient-accent">We'll build the rest.</span></h1>
+                <p class="hero-subtitle">Websites, online stores, apps, and custom systems, planned with you 1-on-1 and coded from scratch to fit exactly how your business works.</p>
                 <div class="hero-buttons">
-                    <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Get Your Free Website Evaluation</a>
-                    <a href="{{ url_for('main.portfolio') }}" class="btn btn-outline">See Our Work</a>
+                    <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Get a Free Consultation</a>
+                    <a href="{{ url_for('main.portfolio') }}" class="btn btn-outline">See What We've Built</a>
                 </div>
             </div>
 
@@ -26,12 +26,16 @@
                         <div class="browser-url"><span id="browserUrlText">moore-qualitybuilders.com</span></div>
                     </div>
                     <div class="browser-content">
-                        {{ screenshot('mqb-preview', 'Moore Quality Builders — a Static Designs project', '(max-width: 560px) 92vw, 520px', eager=true, id='heroShowcaseImg') }}
+                        {# Phones get the project's phone screenshot, shown in a phone frame (see MOBILE POLISH in style.css) #}
+                        <picture>
+                            <source id="heroShowcaseMobile" media="(max-width: 767px)" srcset="{{ url_for('static', filename='images/mqb-mobile.webp') }}" width="360" height="780">
+                            {{ screenshot('mqb-preview', 'Moore Quality Builders — a Static Designs project', '(max-width: 560px) 92vw, 520px', eager=true, id='heroShowcaseImg') }}
+                        </picture>
                     </div>
                     <div class="browser-indicators">
                         <button class="indicator-bar active" data-index="0" aria-label="Show Moore Quality Builders"></button>
-                        <button class="indicator-bar" data-index="1" aria-label="Show Pixel Flip"></button>
-                        <button class="indicator-bar" data-index="2" aria-label="Show Amor Frames"></button>
+                        <button class="indicator-bar" data-index="1" aria-label="Show PixelFlip Dashboard"></button>
+                        <button class="indicator-bar" data-index="2" aria-label="Show Gameboy Retreat"></button>
                     </div>
                 </div>
             </div>
@@ -76,19 +80,19 @@
         <div class="services-strip">
             <div class="strip-item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                Custom Web Design
+                Websites
             </div>
             <div class="strip-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                SEO
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                Online Stores
             </div>
             <div class="strip-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                PPC
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                Apps
             </div>
             <div class="strip-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
-                Hosting
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                Custom Systems
             </div>
         </div>
     </div>
@@ -98,7 +102,7 @@
 <section class="section-padding">
     <div class="container">
         <h2 class="section-title">What We Do</h2>
-        <p class="section-subtitle">Everything you need to establish a professional online presence</p>
+        <p class="section-subtitle">From your first website to the systems that run your business</p>
 
         <div class="what-we-do-grid">
             <div class="what-we-do-card">
@@ -106,23 +110,23 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/><line x1="14" y1="4" x2="10" y2="20"/></svg>
                 </div>
                 <h3>Custom Web Design</h3>
-                <p>Custom-coded websites built from scratch — no WordPress templates, no page builders. Your site, your way.</p>
+                <p>Custom-coded websites and online stores built from scratch — no WordPress templates, no page builders. Your site, your way.</p>
+            </div>
+
+            <div class="what-we-do-card">
+                <div class="what-we-do-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                </div>
+                <h3>Custom Systems</h3>
+                <p>Software built around how you work: touchscreen stations, scanners, dashboards, and automations that save your team hours.</p>
             </div>
 
             <div class="what-we-do-card">
                 <div class="what-we-do-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                 </div>
-                <h3>SEO</h3>
-                <p>Get found on Google. We optimize your site structure, content, and performance to rank higher and drive organic traffic.</p>
-            </div>
-
-            <div class="what-we-do-card">
-                <div class="what-we-do-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
-                </div>
-                <h3>PPC Advertising</h3>
-                <p>Targeted pay-per-click campaigns on Google and social platforms that bring qualified leads straight to your business.</p>
+                <h3>SEO &amp; Google Ads</h3>
+                <p>Get found on Google with a site built to rank, plus pay-per-click campaigns on Google and social media when you want leads faster.</p>
             </div>
 
             <div class="what-we-do-card">
@@ -135,7 +139,7 @@
         </div>
 
         <div class="cta-center">
-            <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get Your Free Evaluation</a>
+            <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get a Free Consultation</a>
         </div>
     </div>
 </section>
@@ -159,7 +163,7 @@
             <div class="comparison-column highlight">
                 <h3>Static Designs</h3>
                 <ul class="comparison-list positive">
-                    <li>$0 down, or from $499.99 upfront</li>
+                    <li>Starting from $0 down, or from $499.99 upfront</li>
                     <li>Direct 1-on-1 collaboration</li>
                     <li>100% custom designs</li>
                     <li>24-hour response time</li>
@@ -186,6 +190,7 @@
                         {{ speed_badge(project) }}
                     </div>
                     <div class="portfolio-preview-info">
+                        <p class="project-type">{{ project_type(project) }}</p>
                         <h3>{{ project.name }}</h3>
                         <p class="tech-tags">{{ project.stack | join(' • ') }}</p>
                     </div>

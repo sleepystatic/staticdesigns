@@ -11,28 +11,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileNav = document.getElementById('mobileNav');
 
     if (mobileMenuToggle && mobileNav) {
+        function setMenuOpen(open) {
+            mobileMenuToggle.classList.toggle('active', open);
+            mobileNav.classList.toggle('active', open);
+            mobileMenuToggle.setAttribute('aria-expanded', open);
+        }
+
         mobileMenuToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-            mobileNav.classList.toggle('active');
+            setMenuOpen(!mobileNav.classList.contains('active'));
         });
 
         // Close mobile menu when clicking a link
         const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
         mobileNavLinks.forEach(link => {
             link.addEventListener('click', function() {
-                mobileMenuToggle.classList.remove('active');
-                mobileNav.classList.remove('active');
+                setMenuOpen(false);
             });
         });
 
-        // Close mobile menu when clicking outside
+        // Close mobile menu when clicking outside or pressing Escape
         document.addEventListener('click', function(event) {
             const isClickInsideNav = mobileNav.contains(event.target);
             const isClickOnToggle = mobileMenuToggle.contains(event.target);
 
             if (!isClickInsideNav && !isClickOnToggle && mobileNav.classList.contains('active')) {
-                mobileMenuToggle.classList.remove('active');
-                mobileNav.classList.remove('active');
+                setMenuOpen(false);
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && mobileNav.classList.contains('active')) {
+                setMenuOpen(false);
+                mobileMenuToggle.focus();
             }
         });
     }
@@ -61,8 +71,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        // The arrows are hidden on phones (style.css), so skip measuring there: it forces a full layout on load
+        const arrowsHidden = window.matchMedia('(max-width: 767px)');
+
         // Update button visibility based on scroll position
         function updateCarouselButtons() {
+            if (arrowsHidden.matches) return;
             const maxScroll = carouselTrack.scrollWidth - carouselTrack.clientWidth;
 
             if (carouselTrack.scrollLeft <= 0) {
@@ -91,14 +105,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // HERO SHOWCASE ROTATION
     // ============================================
     const heroImg = document.getElementById('heroShowcaseImg');
+    const heroMobile = document.getElementById('heroShowcaseMobile');
     const browserUrl = document.getElementById('browserUrlText');
     const indicators = document.querySelectorAll('.indicator-bar');
 
     if (heroImg && browserUrl && indicators.length) {
+        // img: desktop screenshot base name; mobile: the phone screenshot shown on phones
         const showcaseProjects = [
-            { img: '/static/images/mqb-preview', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
-            { img: '/static/images/pixelflip-landing-preview', url: 'pixelflip.app', alt: 'PixelFlip' },
-            { img: '/static/images/af-preview', url: 'amorframesbyluv.com', alt: 'Amor Frames' }
+            { img: '/static/images/mqb-preview', mobile: '/static/images/mqb-mobile.webp', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
+            { img: '/static/images/pixelflip-dashboard-preview', mobile: '/static/images/pixelflip-dashboard-mobile.webp', url: 'dashboard.pixelflip.app', alt: 'PixelFlip Dashboard' },
+            { img: '/static/images/gbr-preview', mobile: '/static/images/gbr-mobile.webp', url: 'gameboyretreat.com', alt: 'Gameboy Retreat' }
         ];
         let currentIndex = 0;
         let rotationTimer;
@@ -109,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 currentIndex = index;
                 const base = showcaseProjects[index].img;
+                if (heroMobile) heroMobile.srcset = showcaseProjects[index].mobile;
                 heroImg.srcset = `${base}-720.webp 720w, ${base}-1200.webp 1200w`;
                 heroImg.src = `${base}-1200.webp`;
                 heroImg.alt = showcaseProjects[index].alt + ' — a Static Designs project';
@@ -169,21 +186,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // ============================================
     // NAVBAR SCROLL EFFECT
     // ============================================
+    // At the very top of a page the navbar floats as a rounded bar. Once the page leaves the top it gets
+    // "is-docked" and stretches edge to edge against the top; on phones it also slims down (see .navbar in
+    // style.css). Watching a tiny marker at the top of the page avoids running code on every scroll event.
     const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
 
-    if (navbar) {
-        window.addEventListener('scroll', function() {
-            const currentScroll = window.pageYOffset;
+    if (navbar && 'IntersectionObserver' in window) {
+        const topMarker = document.createElement('div');
+        topMarker.setAttribute('aria-hidden', 'true');
+        topMarker.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:16px;pointer-events:none';
+        document.body.prepend(topMarker);
 
-            if (currentScroll > 100) {
-                navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
-            } else {
-                navbar.style.boxShadow = '0 4px 6px -1px rgba(217, 70, 239, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.3)';
+        let firstCheck = true;
+        new IntersectionObserver(function(entries) {
+            const docked = !entries[0].isIntersecting;
+
+            // A page that opens already scrolled (say, a reload partway down) starts docked instead of
+            // animating into place: transitions stay off until two frames have drawn
+            if (firstCheck && docked) {
+                navbar.classList.add('no-transition');
+                requestAnimationFrame(function() {
+                    requestAnimationFrame(function() {
+                        navbar.classList.remove('no-transition');
+                    });
+                });
             }
+            firstCheck = false;
 
-            lastScroll = currentScroll;
-        });
+            navbar.classList.toggle('is-docked', docked);
+        }).observe(topMarker);
     }
 
     // ============================================

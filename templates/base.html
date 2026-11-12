@@ -1,16 +1,19 @@
+{% from "macros.html" import brand_logo %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tints the phone browser's address bar to match the site -->
+    <meta name="theme-color" content="#1f1f2e">
 
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="64x64" href="{{ url_for('static', filename='images/favicon-64x64.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='images/favicon-96x96.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
 
 
-    <title>{% block title %}Static Designs - Professional Web Development{% endblock %}</title>
-    <meta name="description" content="{% block description %}Static Designs offers custom web development services with competitive pricing and personalized 1 on 1 collaboration.{% endblock %}">
+    <title>{% block title %}Static Designs - Custom Websites, Apps & Systems{% endblock %}</title>
+    <meta name="description" content="{% block description %}Static Designs builds custom-coded websites, online stores, apps, and business systems, planned with you 1-on-1 and coded from scratch.{% endblock %}">
     <link rel="canonical" href="{{ config.SITE_URL }}{{ request.path }}">
 
     <!-- Link previews when the site is shared in texts and on social media -->
@@ -22,24 +25,22 @@
     <meta property="og:image" content="{{ config.SITE_URL }}{{ url_for('static', filename='images/share-card.jpg') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Static Designs: websites that turn visitors into customers">
+    <meta property="og:image:alt" content="Static Designs: bring the idea, we'll build the rest">
     <meta name="twitter:card" content="summary_large_image">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Self-hosted Plus Jakarta Sans (one variable file covers weights 400-800); preloading it lets text paint in it right away -->
+    <link rel="preload" href="{{ url_for('static', filename='fonts/plus-jakarta-sans-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
-            <a href="{{ url_for('main.home') }}" class="logo">
-                <img class="logo-image" src="{{ url_for('static', filename='images/staticdesignslogo.webp') }}" alt="Static Designs" width="266" height="150">
-            </a>
+            {{ brand_logo() }}
 
             <ul class="nav-links">
                 <li><a href="{{url_for ('main.home') }}" class="nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">Home</a></li>
-                <li><a href="{{ url_for('main.portfolio') }}" class="nav-link {% if request.endpoint == 'main.portfolio' %}active{% endif %}">Portfolio</a></li>
+                <li><a href="{{ url_for('main.portfolio') }}" class="nav-link {% if request.endpoint in ['main.portfolio', 'main.project'] %}active{% endif %}">Portfolio</a></li>
                 <li><a href="{{ url_for('main.services') }}" class="nav-link {% if request.endpoint == 'main.services' %}active{% endif %}">Services</a></li>
                 <li><a href="{{ url_for('main.about') }}" class="nav-link {% if request.endpoint == 'main.about' %}active{% endif %}">About</a></li>
                 <li><a href="{{ url_for('main.blog') }}" class="nav-link {% if request.endpoint in ['main.blog', 'main.blog_post'] %}active{% endif %}">Blog</a></li>
@@ -47,7 +48,7 @@
             </ul>
 
             <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileNav">
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
                 <span class="hamburger-line"></span>
@@ -57,12 +58,12 @@
         <!-- Mobile Navigation -->
         <div class="mobile-nav" id="mobileNav">
             <ul class="mobile-nav-links">
-                <li><a href="{{ url_for('main.home') }}" class="mobile-nav-link">Home</a></li>
-                <li><a href="{{ url_for('main.portfolio') }}" class="mobile-nav-link">Portfolio</a></li>
-                <li><a href="{{ url_for('main.services') }}" class="mobile-nav-link">Services</a></li>
-                <li><a href="{{ url_for('main.about') }}" class="mobile-nav-link">About</a></li>
-                <li><a href="{{ url_for('main.blog') }}" class="mobile-nav-link">Blog</a></li>
-                <li><a href="{{ url_for('contact.contact') }}" class="mobile-nav-link">Contact</a></li>
+                <li><a href="{{ url_for('main.home') }}" class="mobile-nav-link {% if request.endpoint == 'main.home' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('main.portfolio') }}" class="mobile-nav-link {% if request.endpoint in ['main.portfolio', 'main.project'] %}active{% endif %}">Portfolio</a></li>
+                <li><a href="{{ url_for('main.services') }}" class="mobile-nav-link {% if request.endpoint == 'main.services' %}active{% endif %}">Services</a></li>
+                <li><a href="{{ url_for('main.about') }}" class="mobile-nav-link {% if request.endpoint == 'main.about' %}active{% endif %}">About</a></li>
+                <li><a href="{{ url_for('main.blog') }}" class="mobile-nav-link {% if request.endpoint in ['main.blog', 'main.blog_post'] %}active{% endif %}">Blog</a></li>
+                <li><a href="{{ url_for('contact.contact') }}" class="mobile-nav-link {% if request.endpoint == 'contact.contact' %}active{% endif %}">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -91,11 +92,11 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Static Designs</h3>
-                    <p>Professional web development with personalized service and competitive pricing.</p>
+                    {{ brand_logo('logo-footer') }}
+                    <p>Custom-coded websites, online stores, and systems, built 1-on-1 with you.</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h3>Quick Links</h3>
                     <ul class="footer-links">
                         <li><a href="{{ url_for('main.home') }}">Home</a></li>
                         <li><a href="{{ url_for('main.portfolio') }}">Portfolio</a></li>
@@ -106,7 +107,7 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Get In Touch</h4>
+                    <h3>Get In Touch</h3>
                     <a href="{{ url_for('contact.contact') }}" class="btn btn-secondary">Get a Free Evaluation</a>
                 </div>
             </div>

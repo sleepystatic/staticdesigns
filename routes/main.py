@@ -1,9 +1,10 @@
-from flask import Blueprint, render_template, abort, url_for, Response
-from projects import PROJECTS, PAGESPEED_MEASURED
+from flask import Blueprint, render_template, abort, request, url_for, Response
+from projects import PROJECTS, CATEGORIES, PAGESPEED_MEASURED
 from pagespeed import pagespeed_meter
 
 main_bp = Blueprint('main', __name__)
 main_bp.add_app_template_global(pagespeed_meter)
+main_bp.add_app_template_global(CATEGORIES, 'project_categories')
 
 BLOG_POSTS = [
     {
@@ -24,8 +25,12 @@ def home():
 
 @main_bp.route('/portfolio')
 def portfolio():
-    """Full portfolio grid page"""
-    return render_template('portfolio.html', projects=PROJECTS)
+    """Portfolio grid, optionally filtered to one category: /portfolio?type=software"""
+    active = request.args.get('type')
+    if active not in CATEGORIES:
+        active = None
+    shown = [p for p in PROJECTS if active is None or active in p['categories']]
+    return render_template('portfolio.html', projects=shown, active=active)
 
 @main_bp.route('/portfolio/<slug>')
 def project(slug):

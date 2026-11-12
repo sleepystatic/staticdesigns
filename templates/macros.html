@@ -25,3 +25,16 @@
 {%- set meter = pagespeed_meter(project.pagespeed) -%}
 {%- if meter %}<span class="speed-badge">{{ speed_meter(meter) }}</span>{% endif -%}
 {%- endmacro %}
+
+{# A project's types from projects.py CATEGORIES, e.g. "Website · Software" #}
+{% macro project_type(project) -%}
+{% for key in project.categories %}{{ project_categories[key][1] }}{% if not loop.last %} &middot; {% endif %}{% endfor %}
+{%- endmacro %}
+
+{# The Static Designs logo: "{Static}" over a letter-spaced "DESIGNS" (styles: .logo in style.css) #}
+{% macro brand_logo(extra_class='') -%}
+<a href="{{ url_for('main.home') }}" class="logo{% if extra_class %} {{ extra_class }}{% endif %}" aria-label="Static Designs">
+    <span class="logo-mark"><span class="logo-brace">{</span>Static<span class="logo-brace">}</span></span>
+    <span class="logo-sub" aria-hidden="true"><span>D</span><span>E</span><span>S</span><span>I</span><span>G</span><span>N</span><span>S</span></span>
+</a>
+{%- endmacro %}

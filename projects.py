@@ -1,8 +1,17 @@
 """Portfolio projects: homepage Recent Work, the /portfolio grid, and each /portfolio/<slug> page, in this order.
 
+categories: one or more keys from CATEGORIES. A project that is both (a site with software behind it) lists both and
+shows up under either filter on /portfolio.
+
 pagespeed: copy a run from pagespeed.web.dev's Desktop tab. score is the Performance number; fcp, lcp, and si are
 in seconds, tbt in milliseconds, and cls as shown. Projects scoring below PAGESPEED_MIN_SHOWN (or None) get no meter.
 """
+
+# Portfolio filters, in button order: key -> (filter button label, label on a project card)
+CATEGORIES = {
+    'websites': ('Websites', 'Website'),
+    'software': ('Software & Systems', 'Software'),
+}
 
 PAGESPEED_MEASURED = 'October 2026'
 PAGESPEED_MIN_SHOWN = 90
@@ -15,6 +24,7 @@ PROJECTS = [
         'image': 'mqb-preview',
         'mobile_image': 'mqb-mobile',
         'own_project': False,
+        'categories': ['websites'],
         'summary': 'A custom website for a licensed San Diego contractor, built to turn homeowners into estimate requests.',
         'paragraphs': [
             'Moore Quality Builders is a licensed general contractor that has served San Diego County since 2009. Founder Michael Moore brings more than 40 years of experience to custom homes, ADUs, remodels, and repairs across San Diego, La Jolla, Del Mar, and nearby communities.',
@@ -39,6 +49,7 @@ PROJECTS = [
         'image': 'equalitie-preview',
         'mobile_image': 'equalitie-mobile',
         'own_project': False,
+        'categories': ['websites'],
         'summary': 'An online store for a minimalist clothing brand, designed to feel as clean as the clothes.',
         'paragraphs': [
             'Equalitie is a clothing brand built on timeless, minimalist pieces, starting with shirts and crewnecks.',
@@ -63,6 +74,7 @@ PROJECTS = [
         'image': 'gbr-preview',
         'mobile_image': 'gbr-mobile',
         'own_project': True,
+        'categories': ['websites', 'software'],
         'summary': 'Our own retro handheld shop, where you can browse and buy from inside a working Game Boy.',
         'paragraphs': [
             'Gameboy Retreat is our own business: a Stockton shop that restores broken Game Boys and other Nintendo handhelds and ships them nationwide. Every console is stripped, cleaned, rehoused, and repaired by hand, then tested before it ships.',
@@ -86,6 +98,7 @@ PROJECTS = [
         'image': 'ww-preview',
         'mobile_image': 'ww-mobile',
         'own_project': False,
+        'categories': ['websites'],
         'summary': "A professional website for a Lodi car wash equipment and service company that keeps operators' washes running.",
         'paragraphs': [
             'Wash Works is a car wash service and equipment company in Lodi, CA. Their team maintains, installs, and repairs tunnel equipment, conveyors, vacuums, and electrical systems, builds UL508A-listed control panels, and helps operators with equipment buying and marketing.',
@@ -110,6 +123,7 @@ PROJECTS = [
         'image': 'af-preview',
         'mobile_image': 'af-mobile',
         'own_project': False,
+        'categories': ['websites'],
         'summary': 'An image-first website for a California wedding photographer, built to turn browsing couples into inquiries.',
         'paragraphs': [
             'Amor Frames is an editorial wedding photography business based in California, photographing couples everywhere from Sacramento to Yosemite.',
@@ -133,6 +147,7 @@ PROJECTS = [
         'image': 'pixelflip-landing-preview',
         'mobile_image': 'pixelflip-landing-mobile',
         'own_project': True,
+        'categories': ['websites'],
         'summary': 'The landing page for PixelFlip, our own marketplace deal finder, built to explain the product fast and turn visitors into sign-ups.',
         'paragraphs': [
             'PixelFlip is our own product: a deal finder that watches Craigslist, OfferUp, Mercari, and Facebook Marketplace as often as every 5 minutes and alerts you when a listing matches your search.',
@@ -156,6 +171,7 @@ PROJECTS = [
         'image': 'pixelflip-dashboard-preview',
         'mobile_image': 'pixelflip-dashboard-mobile',
         'own_project': True,
+        'categories': ['software'],
         'summary': 'The app behind PixelFlip: a live dashboard where users set their searches, choose marketplaces, and get alerted when a deal appears.',
         'paragraphs': [
             'The PixelFlip dashboard is where our deal finder actually runs. Signed-in users manage their searches here and watch new listings come in.',

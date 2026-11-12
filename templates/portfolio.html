@@ -1,29 +1,38 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot, speed_badge %}
+{% from "macros.html" import screenshot, speed_badge, project_type %}
 
 {% block title %}Portfolio - Static Designs{% endblock %}
-{% block description %}Explore our portfolio of custom web development projects featuring e-commerce sites, business websites, and more.{% endblock %}
+{% block description %}Custom-coded websites, online stores, and software built by Static Designs, from small-business sites to marketplace scanners.{% endblock %}
 
 {% block content %}
 <!-- Portfolio Header -->
 <section class="page-header">
     <div class="container">
         <h1 class="page-title">Our Portfolio</h1>
-        <p class="page-subtitle">Custom websites built with care and expertise</p>
+        <p class="page-subtitle">Websites, online stores, and software, all custom-coded</p>
     </div>
 </section>
 
 <!-- Portfolio Grid -->
 <section class="portfolio-grid-section section-padding">
     <div class="container">
+        {# Each filter is a real link (/portfolio?type=software), so a filtered view can be shared #}
+        <nav class="portfolio-filters" aria-label="Filter projects">
+            <a href="{{ url_for('main.portfolio') }}" class="filter-chip{% if not active %} active{% endif %}"{% if not active %} aria-current="page"{% endif %}>All</a>
+            {% for key, labels in project_categories.items() %}
+            <a href="{{ url_for('main.portfolio', type=key) }}" class="filter-chip{% if active == key %} active{% endif %}"{% if active == key %} aria-current="page"{% endif %}>{{ labels[0] }}</a>
+            {% endfor %}
+        </nav>
+
         <div class="portfolio-grid">
             {% for project in projects %}
             <a href="{{ url_for('main.project', slug=project.slug) }}" class="portfolio-item">
                 <div class="portfolio-item-image">
-                    {{ screenshot(project.image, project.name ~ ' website screenshot', '600px', eager=loop.first) }}
+                    {{ screenshot(project.image, project.name ~ ' screenshot', '600px', eager=loop.first) }}
                 </div>
                 <div class="portfolio-item-overlay">
                     <div class="portfolio-item-content">
+                        <p class="project-type">{{ project_type(project) }}</p>
                         <h2 class="portfolio-item-title">{{ project.name }}</h2>
                         <p class="portfolio-item-tech">{{ project.stack | join(' • ') }}</p>
                     </div>
@@ -32,7 +41,7 @@
             </a>
             {% endfor %}
         </div>
-        
+
         <!-- Empty state for future projects -->
         <div class="portfolio-expand-notice">
             <p>More projects coming soon! Check back regularly for updates.</p>

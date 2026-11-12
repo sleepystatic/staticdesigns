@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot, speed_meter %}
+{% from "macros.html" import screenshot, speed_meter, project_type %}
 
 {% block title %}{{ project.name }} - Static Designs Portfolio{% endblock %}
 {% block description %}{{ project.summary }}{% endblock %}
@@ -8,7 +8,7 @@
 <section class="page-header project-header">
     <div class="container">
         <a class="project-back" href="{{ url_for('main.portfolio') }}">&larr; All projects</a>
-        <p class="project-label">{{ 'Our own product' if project.own_project else 'Client project' }}</p>
+        <p class="project-label">{{ 'Our own product' if project.own_project else 'Client project' }} &middot; {{ project_type(project) }}</p>
         <h1 class="page-title">{{ project.name }}</h1>
         <p class="page-subtitle">{{ project.summary }}</p>
         <a href="{{ project.url }}" class="btn btn-primary btn-large" target="_blank" rel="noopener">Visit live site &#8599;</a>

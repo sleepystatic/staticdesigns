@@ -4,6 +4,18 @@
    ============================================ */
 
 /* ============================================
+   FONT (self-hosted, preloaded in base.html)
+   ============================================ */
+@font-face {
+    font-family: 'Plus Jakarta Sans';
+    font-style: normal;
+    font-weight: 400 800;
+    font-display: swap;
+    src: url('../fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ============================================
    CSS VARIABLES
    ============================================ */
 @property --gradient-x {
@@ -85,6 +97,11 @@
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
+
+    /* Navbar: the room every page keeps at its top for the bar (its docked height; 65px on phones),
+       and the timing of the float-to-docked animation */
+    --nav-space: 72px;
+    --nav-ease: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ============================================
@@ -99,6 +116,8 @@
 html {
     font-size: var(--font-size-base);
     scroll-behavior: smooth;
+    /* Jumps to a #section land below the docked navbar */
+    scroll-padding-top: 88px;
 }
 
 body {
@@ -107,6 +126,8 @@ body {
     color: var(--text-primary);
     background-color: var(--bg-primary);
     overflow-x: hidden;
+    /* The navbar is fixed, so the page reserves its room here (see NAVIGATION) */
+    padding-top: var(--nav-space);
 }
 
 img {
@@ -206,16 +227,96 @@ p {
 /* ============================================
    NAVIGATION
    ============================================ */
+/* At the very top of a page the navbar floats: a rounded bar with a gap above and beside it, as wide as the
+   page content (1200px) on desktop. Once the page scrolls, main.js adds .is-docked and the bar stretches edge
+   to edge against the top (phones also slim it; see MOBILE POLISH).
+   How it changes shape without counting as a layout shift (PageSpeed's CLS): the navbar box itself is always
+   fixed and full width. Its fill (::before) is cut to the floating shape with a clip-path, the floating
+   outline and shadow (::after) sit still at that shape and fade out, and the gap above is a transform.
+   Animating left/right/top instead would register about 0.01 CLS each time the desktop bar docks. */
 .navbar {
-    position: sticky;
+    /* how far the floating bar sits in from each side */
+    --nav-gutter: 16px;
+    position: fixed;
     top: 0;
-    background: rgba(31, 31, 46, 0.75);
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0 var(--nav-gutter);
+    transform: translateY(16px);
+    transition: transform var(--nav-ease), padding var(--nav-ease),
+                backdrop-filter var(--nav-ease), -webkit-backdrop-filter var(--nav-ease);
+}
+
+/* The bar's fill (its shadow shows once docked, when the clip opens up below the bar) */
+.navbar::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background-color: rgba(31, 31, 46, 0.75);
+    border-bottom: 1px solid transparent;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    clip-path: inset(0 var(--nav-gutter) round 16px);
+    transition: clip-path var(--nav-ease), background-color var(--nav-ease), border-color var(--nav-ease);
+}
+
+/* The floating bar's hairline outline (drawn as a shadow, so it takes no room) and soft drop shadow */
+.navbar::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    bottom: 0;
+    left: var(--nav-gutter);
+    right: var(--nav-gutter);
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 12px 32px rgba(0, 0, 0, 0.35);
+    transition: opacity var(--nav-ease);
+}
+
+/* Docked, the bar gets the frosted-glass blur, since the page now scrolls under it */
+.navbar.is-docked {
+    padding: 0;
+    transform: none;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-subtle);
-    box-shadow: var(--box-shadow);
-    z-index: 1000;
-    transition: var(--transition-normal);
+}
+
+.navbar.is-docked::before {
+    clip-path: inset(0 0 -32px round 0);
+    border-bottom-color: var(--border-subtle);
+}
+
+.navbar.is-docked::after {
+    opacity: 0;
+}
+
+/* On wide screens the floating bar is exactly as wide as the page content */
+@media (min-width: 1232px) {
+    .navbar {
+        --nav-gutter: calc(50% - 600px);
+    }
+}
+
+/* main.js sets this for a moment when a page opens already scrolled (say, a reload partway down),
+   so the bar starts out docked instead of animating into place */
+.navbar.no-transition,
+.navbar.no-transition::before,
+.navbar.no-transition::after,
+.navbar.no-transition .nav-container,
+.navbar.no-transition .logo,
+.navbar.no-transition .mobile-nav {
+    transition: none;
+}
+
+/* The first section of every page (.hero, .page-header, .blog-post-header) slides up under the navbar, so its
+   own background shows around the floating bar. Each one adds var(--nav-space) to its top padding, which keeps
+   its content where it was. */
+.hero,
+.page-header,
+.blog-post-header {
+    margin-top: calc(-1 * var(--nav-space));
 }
 
 .nav-container {
@@ -225,9 +326,43 @@ p {
     padding: var(--spacing-sm) var(--spacing-sm);
 }
 
-.logo-image {
-    height: 75px;
-    width: auto;
+/* Logo (brand_logo in macros.html): "{Static}" over a letter-spaced "DESIGNS", in the site font.
+   Everything inside is sized in em, so font-size on .logo scales the whole thing. */
+.logo {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 1.625rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--text-heading);
+    white-space: nowrap;
+}
+
+.logo:focus-visible {
+    outline: 2px solid var(--secondary-violet);
+    outline-offset: 6px;
+    border-radius: 4px;
+}
+
+.logo-brace {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Each letter of DESIGNS is its own span, spread to exactly the width of "{Static}" */
+.logo-sub {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.42em;
+    padding: 0 0.42em 0 0.46em;
+    font-size: 0.355em;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: #cfc6ea;
 }
 
 .nav-links {
@@ -263,19 +398,27 @@ p {
     color: var(--text-heading);
 }
 
-/* Mobile Menu Toggle */
+/* Mobile Menu Toggle: a 44px tap target; the negative margin lines the icon up with the page edge */
 .mobile-menu-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
+    margin-right: -11px;
     background: none;
     border: none;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
     padding: 0;
     position: relative;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-toggle:focus-visible {
+    outline: 2px solid var(--secondary-violet);
+    outline-offset: 2px;
 }
 
 .mobile-menu-toggle.active {
@@ -284,31 +427,31 @@ p {
 
 .hamburger-line {
     position: absolute;
-    width: 25px;
-    height: 3px;
+    width: 22px;
+    height: 2px;
     background: var(--text-heading);
     border-radius: 2px;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.25s ease;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                top 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.2s ease;
     left: 50%;
-    margin-left: -12.5px;
+    margin-left: -11px;
 }
 
 .hamburger-line:nth-child(1) {
-    top: 11px;
+    top: 14px;
 }
 
 .hamburger-line:nth-child(2) {
-    top: 19px;
+    top: 21px;
 }
 
 .hamburger-line:nth-child(3) {
-    top: 27px;
+    top: 28px;
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(1) {
-    top: 19px;
+    top: 21px;
     transform: rotate(45deg);
 }
 
@@ -318,38 +461,81 @@ p {
 }
 
 .mobile-menu-toggle.active .hamburger-line:nth-child(3) {
-    top: 19px;
+    top: 21px;
     transform: rotate(-45deg);
 }
 
-/* Mobile Navigation */
+/* Mobile Navigation: drops down over the page instead of pushing it, and marks the current page.
+   Under the floating bar it is a matching rounded card 8px below it; docked, it hangs flush and edge to edge. */
 .mobile-nav {
-    display: none;
-    background: rgba(31, 31, 46, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1px solid var(--border-subtle);
+    position: absolute;
+    top: calc(100% + 8px);
+    left: var(--nav-gutter);
+    right: var(--nav-gutter);
+    background: var(--bg-primary);
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    border-radius: 16px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 16px 32px rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0s 0.2s,
+                top var(--nav-ease), left var(--nav-ease), right var(--nav-ease), border-radius var(--nav-ease),
+                border-color var(--nav-ease), box-shadow var(--nav-ease);
+}
+
+/* Docked, its top border sits on the bar's bottom border, as one line */
+.navbar.is-docked .mobile-nav {
+    top: calc(100% - 1px);
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    border-color: var(--border-subtle);
+    box-shadow: 0 0 0 1px transparent, 0 16px 32px rgba(0, 0, 0, 0.35);
 }
 
 .mobile-nav.active {
-    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
 }
 
 .mobile-nav-links {
-    padding: var(--spacing-sm) 0;
+    padding: 0.5rem var(--spacing-sm) 0.75rem;
 }
 
 .mobile-nav-link {
     display: block;
-    padding: var(--spacing-sm);
+    padding: 0.875rem 0.75rem;
+    border-radius: var(--border-radius-sm);
     color: var(--text-muted);
+    font-size: 1.0625rem;
     font-weight: 500;
     transition: var(--transition-fast);
+    -webkit-tap-highlight-color: transparent;
 }
 
-.mobile-nav-link:hover {
-    background: var(--gradient-light);
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+    background: var(--surface-light);
     color: var(--text-heading);
+}
+
+.mobile-nav-link.active {
+    box-shadow: inset 3px 0 0 var(--primary-magenta);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .navbar,
+    .navbar::before,
+    .navbar::after,
+    .mobile-nav,
+    .mobile-menu-toggle,
+    .hamburger-line {
+        transition: none;
+    }
 }
 
 /* Desktop Navigation */
@@ -358,7 +544,8 @@ p {
         display: flex;
     }
 
-    .mobile-menu-toggle {
+    .mobile-menu-toggle,
+    .mobile-nav {
         display: none;
     }
 }
@@ -427,7 +614,7 @@ p {
    ============================================ */
 .hero {
     background: var(--bg-primary);
-    padding: var(--spacing-xl) 0 0;
+    padding: calc(var(--spacing-xl) + var(--nav-space)) 0 0;
     position: relative;
     overflow: hidden;
     border-bottom: 1px solid var(--border-subtle);
@@ -481,8 +668,14 @@ p {
 .hero-title {
     font-size: 2.75rem;
     line-height: 1.1;
+    text-wrap: balance;
     margin-bottom: 1.25rem;
     animation: fadeInUp 0.8s ease 0.1s backwards;
+}
+
+/* Each sentence of the headline starts on its own line, then wraps evenly */
+.hero-title-line {
+    display: block;
 }
 
 .gradient-accent {
@@ -568,6 +761,10 @@ p {
 .browser-content {
     position: relative;
     overflow: hidden;
+}
+
+.browser-content picture {
+    display: block;
 }
 
 .browser-content img {
@@ -1422,9 +1619,14 @@ p {
     height: 100%;
 }
 
+.advantage-item h3,
 .advantage-item h4 {
     margin-bottom: 0.5rem;
     color: var(--text-heading);
+}
+
+.advantage-item h3 {
+    font-size: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -1576,6 +1778,13 @@ p {
     margin-bottom: var(--spacing-sm);
 }
 
+.contact-email {
+    color: var(--secondary-violet);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+}
+
 .next-steps {
     list-style: decimal;
     padding-left: var(--spacing-md);
@@ -1683,7 +1892,7 @@ p {
    ============================================ */
 .page-header {
     background: var(--bg-secondary);
-    padding: var(--spacing-xl) 0;
+    padding: calc(var(--spacing-xl) + var(--nav-space)) 0 var(--spacing-xl);
     text-align: center;
     border-bottom: 1px solid var(--border-subtle);
 }
@@ -1774,7 +1983,8 @@ p {
    ============================================ */
 .flash-messages {
     position: fixed;
-    top: 80px;
+    /* clears the floating navbar */
+    top: calc(var(--nav-space) + 32px);
     right: 20px;
     z-index: 9999;
     max-width: 400px;
@@ -1839,8 +2049,13 @@ p {
     margin-bottom: var(--spacing-md);
 }
 
-.footer-section h3,
-.footer-section h4 {
+.logo-footer {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.footer-section h3 {
+    font-size: 1rem;
     color: var(--text-heading);
     margin-bottom: var(--spacing-sm);
 }
@@ -1867,6 +2082,7 @@ p {
 
 .footer-bottom a {
     color: var(--text-muted);
+    white-space: nowrap;
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: var(--transition-fast);
@@ -2037,7 +2253,7 @@ p {
 /* Blog Post */
 .blog-post-header {
     background: var(--bg-secondary);
-    padding: var(--spacing-xl) 0 var(--spacing-lg);
+    padding: calc(var(--spacing-xl) + var(--nav-space)) 0 var(--spacing-lg);
     border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -2463,4 +2679,363 @@ p {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--text-heading);
+}
+
+/* ============================================
+   PORTFOLIO FILTERS & PROJECT TYPES
+   ============================================ */
+.portfolio-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.filter-chip {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border-glow);
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.filter-chip:hover {
+    color: var(--text-heading);
+    border-color: var(--secondary-violet);
+}
+
+.filter-chip.active {
+    background: var(--primary-dark);
+    border-color: transparent;
+    color: var(--text-heading);
+}
+
+.filter-chip:focus-visible {
+    outline: 2px solid var(--secondary-violet);
+    outline-offset: 3px;
+}
+
+/* "Website", "Software", or both, above a project card's name */
+.project-type {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--secondary-violet);
+    margin-bottom: 0.25rem;
+}
+
+.portfolio-item-overlay .project-type {
+    color: inherit;
+    opacity: 0.9;
+}
+
+.systems-section {
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+/* ============================================
+   MOBILE POLISH (phones only; desktop is unchanged)
+   ============================================ */
+@media (max-width: 767px) {
+    /* Navbar on phones: it floats 12px in from the edges as a 60px bar. Docked (.is-docked, set in main.js),
+       it turns solid and slims to 52px (the 44px menu button plus 4px above and below), and the logo
+       scales to 85%. The page keeps 65px at its top for it. */
+    :root {
+        --nav-space: 65px;
+    }
+
+    html {
+        scroll-padding-top: 64px;
+    }
+
+    .navbar {
+        --nav-gutter: 12px;
+        transform: translateY(12px);
+    }
+
+    /* The docked phone bar is solid, so it needs no blur */
+    .navbar.is-docked {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .navbar::before {
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .navbar.is-docked::before {
+        background-color: var(--bg-primary);
+    }
+
+    .nav-container {
+        min-height: 60px;
+        padding: 0.5rem var(--spacing-sm);
+        transition: min-height var(--nav-ease), padding var(--nav-ease);
+    }
+
+    .navbar .logo {
+        font-size: 1.5rem;
+        transform-origin: left center;
+        transition: transform var(--nav-ease);
+    }
+
+    .navbar.is-docked .nav-container {
+        min-height: 52px;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+    }
+
+    .navbar.is-docked .logo {
+        transform: scale(0.85);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .nav-container,
+        .navbar .logo {
+            transition: none;
+        }
+    }
+
+    /* Less empty space between sections, and headings sized for a phone */
+    .section-padding {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .page-header {
+        padding: calc(var(--spacing-lg) + var(--nav-space)) 0 var(--spacing-lg);
+    }
+
+    .section-title,
+    .cta-title {
+        font-size: 2.125rem;
+    }
+
+    .section-subtitle {
+        margin-bottom: var(--spacing-md);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+    }
+
+    /* Buttons fit on one line and are easy to tap */
+    .btn-large {
+        padding: 1rem 1.25rem;
+        font-size: 1.0625rem;
+    }
+
+    .hero-buttons .btn,
+    .pricing-card .btn {
+        width: 100%;
+    }
+
+    /* Hero: room above the headline, a headline whose first line ("Bring the idea.") fills the screen
+       width on any phone, and the showcase becomes a phone showing each project's phone screenshot */
+    .hero {
+        padding-top: calc(4.5rem + var(--nav-space));
+    }
+
+    .hero-title {
+        font-size: clamp(2.5rem, 14.4vw - 5.5px, 3.5rem);
+    }
+
+    .hero-split {
+        gap: var(--spacing-md);
+    }
+
+    .hero-mockup {
+        max-width: 230px;
+    }
+
+    .hero-mockup .browser-frame,
+    .hero-mockup .browser-frame:hover {
+        transform: none;
+        border: 8px solid var(--bg-elevated);
+        border-radius: 32px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45), 0 0 60px rgba(217, 70, 239, 0.15);
+    }
+
+    .hero-mockup .browser-bar {
+        display: none;
+    }
+
+    .hero-mockup .browser-indicators {
+        background: var(--bg-elevated);
+        padding: 10px 0 2px;
+    }
+
+    .hero-mockup .indicator-bar {
+        width: 36px;
+    }
+
+    /* Stats and service tags in tidy pairs instead of wrapping 3 + 1 */
+    .trust-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem var(--spacing-sm);
+    }
+
+    .services-strip {
+        display: grid;
+        grid-template-columns: repeat(2, max-content);
+        justify-content: center;
+        gap: 0.75rem var(--spacing-md);
+    }
+
+    .client-logos-row {
+        gap: 1.5rem 2rem;
+    }
+
+    .client-logo {
+        height: 36px;
+        opacity: 0.7;
+    }
+
+    /* Icon cards become compact rows: icon on the left, text on the right */
+    .what-we-do-card,
+    .value-card,
+    .advantage-item,
+    .process-step {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        column-gap: 1rem;
+        align-items: start;
+        text-align: left;
+        padding: 1.25rem;
+    }
+
+    .what-we-do-icon,
+    .value-icon,
+    .advantage-icon,
+    .step-number {
+        grid-row: span 2;
+        width: 44px;
+        height: 44px;
+        margin: 0;
+    }
+
+    .step-number {
+        font-size: 1.125rem;
+    }
+
+    .what-we-do-card h3,
+    .value-card h3,
+    .advantage-item h3,
+    .advantage-item h4,
+    .process-step h3 {
+        font-size: 1.125rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .value-card p,
+    .advantage-item p,
+    .process-step p {
+        margin-bottom: 0;
+    }
+
+    .what-we-do-grid,
+    .values-grid,
+    .advantage-grid,
+    .addons-grid,
+    .pricing-grid,
+    .process-steps {
+        gap: var(--spacing-sm);
+    }
+
+    .comparison-column,
+    .addon-card,
+    .info-card {
+        padding: 1.75rem 1.5rem;
+    }
+
+    /* The comparison table becomes one card per feature, so no column is cut off */
+    .comparison-table thead {
+        display: none;
+    }
+
+    .comparison-table,
+    .comparison-table tbody,
+    .comparison-table tr,
+    .comparison-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .comparison-table tr {
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .comparison-table tr:last-child {
+        border-bottom: none;
+    }
+
+    .comparison-table td {
+        border: none;
+        padding: 0.4rem 0;
+    }
+
+    .comparison-table td.feature-name {
+        padding-top: 0;
+        font-size: 1.125rem;
+        color: var(--text-heading);
+    }
+
+    .comparison-table td.highlight-column {
+        margin: 0.25rem 0 0.5rem;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-glow);
+        border-radius: var(--border-radius-sm);
+    }
+
+    .comparison-table td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+    }
+
+    .comparison-table td.highlight-column::before {
+        color: var(--secondary-violet);
+    }
+
+    /* Contact: the form comes before the "What You'll Get" box */
+    .contact-form-wrapper {
+        order: -1;
+    }
+
+    /* Footer links in two columns, and the privacy link on its own line */
+    .footer-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: var(--spacing-sm);
+    }
+
+    .footer-bottom [aria-hidden="true"] {
+        display: none;
+    }
+
+    .footer-bottom a {
+        display: block;
+        margin-top: 0.25rem;
+    }
+}
+
+/* Touch screens: no hover lift that sticks after a tap, and a quick press effect instead */
+@media (hover: none) {
+    .btn:hover,
+    .what-we-do-card:hover,
+    .portfolio-preview-item:hover .portfolio-preview-image img {
+        transform: none;
+    }
+
+    .btn:active {
+        transform: scale(0.98);
+    }
 }
