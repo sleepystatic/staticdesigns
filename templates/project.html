@@ -56,6 +56,8 @@
                     <li class="speed-{{ segment.rating }}">{{ segment.name }}<span>{{ segment.value }}</span></li>
                     {% endfor %}
                 </ul>
+                {# Explains the meter and the five results; the anchor is the "five measurements" heading in that post #}
+                <p class="project-score-help"><a href="{{ url_for('main.blog_post', slug='how-to-optimize-your-pagespeed-score') }}#five-measurements"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>What do these numbers mean?</a></p>
                 <p class="project-score-source">Google PageSpeed Insights (desktop), measured {{ measured }}. <a href="{{ meter.report_url }}" target="_blank" rel="noopener">Run the test yourself &#8599;</a></p>
             </div>
             {% endif %}

@@ -102,54 +102,135 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ============================================
-    // HERO SHOWCASE ROTATION
+    // HERO SHOWCASE
     // ============================================
+    // Desktop: the browser frame shows one screenshot that fades to the next project every 5 seconds.
+    // Phones: the phone frame's screen is a strip of all three phone screenshots (index.html). It's a native
+    // scrolling area, so it follows a finger and snaps to one page (style.css), and it slides to the next page
+    // every 5 seconds, pausing while it's touched.
     const heroImg = document.getElementById('heroShowcaseImg');
-    const heroMobile = document.getElementById('heroShowcaseMobile');
+    const heroSlides = document.getElementById('heroSlides');
     const browserUrl = document.getElementById('browserUrlText');
     const indicators = document.querySelectorAll('.indicator-bar');
 
-    if (heroImg && browserUrl && indicators.length) {
-        // img: desktop screenshot base name; mobile: the phone screenshot shown on phones
+    if (heroImg && heroSlides && browserUrl && indicators.length) {
+        // Desktop screenshot base name, address bar text, and alt text, in the same order as the strip and the bars
         const showcaseProjects = [
-            { img: '/static/images/mqb-preview', mobile: '/static/images/mqb-mobile.webp', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
-            { img: '/static/images/pixelflip-dashboard-preview', mobile: '/static/images/pixelflip-dashboard-mobile.webp', url: 'dashboard.pixelflip.app', alt: 'PixelFlip Dashboard' },
-            { img: '/static/images/gbr-preview', mobile: '/static/images/gbr-mobile.webp', url: 'gameboyretreat.com', alt: 'Gameboy Retreat' }
+            { img: '/static/images/mqb-preview', url: 'moore-qualitybuilders.com', alt: 'Moore Quality Builders' },
+            { img: '/static/images/pixelflip-dashboard-preview', url: 'dashboard.pixelflip.app', alt: 'PixelFlip Dashboard' },
+            { img: '/static/images/gbr-preview', url: 'gameboyretreat.com', alt: 'Gameboy Retreat' }
         ];
+        const slides = Array.from(heroSlides.querySelectorAll('.hero-slide'));
+        const phoneLayout = window.matchMedia('(max-width: 767px)');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const ROTATE_MS = 5000;
         let currentIndex = 0;
         let rotationTimer;
 
-        function switchProject(index) {
+        function markActive(index) {
+            currentIndex = index;
+            indicators.forEach((bar, i) => bar.classList.toggle('active', i === index));
+        }
+
+        // Desktop: put another project's screenshot and address in the browser frame
+        function setDesktopProject(index) {
+            const project = showcaseProjects[index];
+            heroImg.srcset = `${project.img}-720.webp 720w, ${project.img}-1200.webp 1200w`;
+            heroImg.src = `${project.img}-1200.webp`;
+            heroImg.alt = project.alt + ' — a Static Designs project';
+            browserUrl.textContent = project.url;
+        }
+
+        function fadeTo(index) {
             if (index === currentIndex) return;
             heroImg.classList.add('fade-out');
             setTimeout(() => {
-                currentIndex = index;
-                const base = showcaseProjects[index].img;
-                if (heroMobile) heroMobile.srcset = showcaseProjects[index].mobile;
-                heroImg.srcset = `${base}-720.webp 720w, ${base}-1200.webp 1200w`;
-                heroImg.src = `${base}-1200.webp`;
-                heroImg.alt = showcaseProjects[index].alt + ' — a Static Designs project';
-                browserUrl.textContent = showcaseProjects[index].url;
+                setDesktopProject(index);
                 heroImg.classList.remove('fade-out');
-                indicators.forEach((bar, i) => bar.classList.toggle('active', i === index));
+                markActive(index);
             }, 300);
         }
 
-        function startRotation() {
-            rotationTimer = setInterval(() => {
-                switchProject((currentIndex + 1) % showcaseProjects.length);
-            }, 5000);
+        // Phones: slide the strip; the observer below marks the bar once that screenshot fills the screen
+        function slideTo(index) {
+            loadPhoneSlides();
+            heroSlides.scrollTo({ left: index * heroSlides.clientWidth, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
         }
+
+        function show(index) {
+            if (phoneLayout.matches) slideTo(index);
+            else fadeTo(index);
+        }
+
+        function scheduleNext() {
+            clearTimeout(rotationTimer);
+            rotationTimer = setTimeout(() => {
+                show((currentIndex + 1) % showcaseProjects.length);
+                scheduleNext();
+            }, ROTATE_MS);
+        }
+
+        // On phones, whichever screenshot fills most of the screen is the current one, however it got there:
+        // a swipe, a tap on a bar, or the timer. On desktop only the first slide is displayed, so this stays quiet.
+        const slideObserver = new IntersectionObserver(entries => {
+            if (!phoneLayout.matches) return;
+            entries.forEach(entry => {
+                if (entry.isIntersecting) markActive(slides.indexOf(entry.target));
+            });
+        }, { root: heroSlides, threshold: 0.6 });
+        slides.forEach(slide => slideObserver.observe(slide));
+
+        // A finger on the strip pauses the rotation; it picks up again 5 seconds after the finger lifts
+        heroSlides.addEventListener('touchstart', () => clearTimeout(rotationTimer), { passive: true });
+        heroSlides.addEventListener('touchend', scheduleNext, { passive: true });
+        heroSlides.addEventListener('touchcancel', scheduleNext, { passive: true });
 
         indicators.forEach(bar => {
             bar.addEventListener('click', () => {
-                clearInterval(rotationTimer);
-                switchProject(parseInt(bar.dataset.index));
-                startRotation();
+                show(parseInt(bar.dataset.index, 10));
+                scheduleNext();
             });
         });
 
-        startRotation();
+        // The strip only scrolls on phones, so only there can it take keyboard focus (arrow keys then flip pages)
+        function applyLayout() {
+            if (phoneLayout.matches) heroSlides.tabIndex = 0;
+            else heroSlides.removeAttribute('tabindex');
+        }
+
+        // Rotating a tablet or resizing a window across 768px starts over at the first project
+        phoneLayout.addEventListener('change', () => {
+            if (phoneLayout.matches) loadPhoneSlides();
+            heroImg.classList.remove('fade-out');
+            setDesktopProject(0);
+            heroSlides.scrollLeft = 0;
+            markActive(0);
+            applyLayout();
+            scheduleNext();
+        });
+
+        // Phones: the other two screenshots download at the first scroll or touch, or 4 seconds after the page loads
+        // (before the first slide at 5), so they never compete with the first screenshot, which is what the page's
+        // speed score waits on. Sliding to one also fetches them, in case that comes first.
+        function loadPhoneSlides() {
+            slides.forEach(slide => {
+                if (slide.dataset.slideSrc) {
+                    slide.src = slide.dataset.slideSrc;
+                    delete slide.dataset.slideSrc;
+                }
+            });
+        }
+        function loadPhoneSlidesOnPhones() {
+            if (phoneLayout.matches) loadPhoneSlides();
+        }
+        heroSlides.addEventListener('touchstart', loadPhoneSlides, { passive: true });
+        window.addEventListener('scroll', loadPhoneSlidesOnPhones, { passive: true, once: true });
+        const loadAfterPageLoad = () => setTimeout(loadPhoneSlidesOnPhones, 4000);
+        if (document.readyState === 'complete') loadAfterPageLoad();
+        else window.addEventListener('load', loadAfterPageLoad);
+
+        applyLayout();
+        scheduleNext();
     }
 
     // ============================================

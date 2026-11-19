@@ -1,4 +1,4 @@
-{% from "macros.html" import brand_logo %}
+{% from "macros.html" import brand_logo, location_line %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +7,10 @@
     <!-- Tints the phone browser's address bar to match the site -->
     <meta name="theme-color" content="#1f1f2e">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='images/favicon-96x96.png') }}">
-    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
+    {# v= makes browsers that saved the old {SD} icon fetch the current one; raise it whenever the icons change #}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png', v=2) }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='images/favicon-96x96.png', v=2) }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon.png', v=2) }}">
 
 
     <title>{% block title %}Static Designs - Custom Websites, Apps & Systems{% endblock %}</title>
@@ -27,6 +28,8 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Static Designs: bring the idea, we'll build the rest">
     <meta name="twitter:card" content="summary_large_image">
+    {# Structured data for search engines (the homepage fills this with the business's details) #}
+    {% block structured_data %}{% endblock %}
 
     <!-- Self-hosted Plus Jakarta Sans (one variable file covers weights 400-800); preloading it lets text paint in it right away -->
     <link rel="preload" href="{{ url_for('static', filename='fonts/plus-jakarta-sans-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -94,6 +97,7 @@
                 <div class="footer-section">
                     {{ brand_logo('logo-footer') }}
                     <p>Custom-coded websites, online stores, and systems, built 1-on-1 with you.</p>
+                    {{ location_line() }}
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>

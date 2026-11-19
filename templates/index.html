@@ -1,5 +1,38 @@
 {% extends "base.html" %}
-{% from "macros.html" import screenshot, speed_badge, project_type %}
+{% from "macros.html" import screenshot, speed_badge, project_type, location_line %}
+
+{% block title %}Static Designs - Custom Websites & Software in Stockton, CA{% endblock %}
+{% block description %}Static Designs builds custom-coded websites, online stores, apps, and business systems in Stockton, CA, planned with you 1-on-1 and coded from scratch.{% endblock %}
+
+{# Tells Google this is a local business in Stockton and which areas it serves. Check it with
+   search.google.com/test/rich-results after changes. Add "sameAs" with the Google Business Profile link once it exists. #}
+{% block structured_data %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "{{ config.SITE_URL }}/#business",
+        "name": "Static Designs",
+        "url": "{{ config.SITE_URL }}/",
+        "description": "Custom-coded websites, online stores, apps, and business systems, planned with you 1-on-1 and coded from scratch.",
+        "logo": "{{ config.SITE_URL }}{{ url_for('static', filename='images/apple-touch-icon.png') }}",
+        "image": "{{ config.SITE_URL }}{{ url_for('static', filename='images/share-card.jpg') }}",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Stockton",
+            "addressRegion": "CA",
+            "addressCountry": "US"
+        },
+        "areaServed": [
+            {"@type": "City", "name": "Stockton, CA"},
+            {"@type": "City", "name": "Lodi, CA"},
+            {"@type": "City", "name": "Manteca, CA"},
+            {"@type": "City", "name": "Tracy, CA"},
+            {"@type": "AdministrativeArea", "name": "San Joaquin County, CA"}
+        ]
+    }
+    </script>
+{% endblock %}
 
 {% block content %}
 <!-- Hero Section — Split Layout -->
@@ -13,6 +46,7 @@
                     <a href="{{ url_for('contact.contact') }}" class="btn btn-primary btn-large">Get a Free Consultation</a>
                     <a href="{{ url_for('main.portfolio') }}" class="btn btn-outline">See What We've Built</a>
                 </div>
+                {{ location_line('hero-location') }}
             </div>
 
             <div class="hero-mockup">
@@ -26,11 +60,19 @@
                         <div class="browser-url"><span id="browserUrlText">moore-qualitybuilders.com</span></div>
                     </div>
                     <div class="browser-content">
-                        {# Phones get the project's phone screenshot, shown in a phone frame (see MOBILE POLISH in style.css) #}
-                        <picture>
-                            <source id="heroShowcaseMobile" media="(max-width: 767px)" srcset="{{ url_for('static', filename='images/mqb-mobile.webp') }}" width="360" height="780">
-                            {{ screenshot('mqb-preview', 'Moore Quality Builders — a Static Designs project', '(max-width: 560px) 92vw, 520px', eager=true, id='heroShowcaseImg') }}
-                        </picture>
+                        {# Desktop: one screenshot that fades to the next project (main.js).
+                           Phones: a phone frame whose screen is a strip of all three phone screenshots you can swipe or drag.
+                           The 2nd and 3rd only show on phones (see MOBILE POLISH in style.css). They start as a blank 1px image;
+                           main.js swaps in data-slide-src after the page loads, so they never slow down the first screenshot.
+                           (Not data-src: main.js's general lazy loader handles that attribute.) #}
+                        <div class="hero-slides" id="heroSlides" role="group" aria-label="Recent projects">
+                            <picture class="hero-slide">
+                                <source media="(max-width: 767px)" srcset="{{ url_for('static', filename='images/mqb-mobile.webp') }}" width="360" height="780">
+                                {{ screenshot('mqb-preview', 'Moore Quality Builders — a Static Designs project', '(max-width: 560px) 92vw, 520px', eager=true, id='heroShowcaseImg') }}
+                            </picture>
+                            <img class="hero-slide hero-slide-phone" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-slide-src="{{ url_for('static', filename='images/pixelflip-dashboard-mobile.webp') }}" width="360" height="780" alt="PixelFlip Dashboard — a Static Designs project" decoding="async">
+                            <img class="hero-slide hero-slide-phone" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-slide-src="{{ url_for('static', filename='images/gbr-mobile.webp') }}" width="360" height="780" alt="Gameboy Retreat — a Static Designs project" decoding="async">
+                        </div>
                     </div>
                     <div class="browser-indicators">
                         <button class="indicator-bar active" data-index="0" aria-label="Show Moore Quality Builders"></button>

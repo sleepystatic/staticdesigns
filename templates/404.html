@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - Static Designs{% endblock %}
+{% block description %}This page doesn't exist or has moved.{% endblock %}
+
+{% block content %}
+<!-- Shown for any bad link (the 404 handler in app.py) -->
+<section class="page-header error-page">
+    <div class="container">
+        <p class="error-code" aria-hidden="true"><span class="logo-brace">{</span>404<span class="logo-brace">}</span></p>
+        <h1 class="page-title">Page not found</h1>
+        <p class="page-subtitle">The link may be old, or the page may have moved. Try one of these instead.</p>
+        <div class="error-actions">
+            <a href="{{ url_for('main.home') }}" class="btn btn-primary">Back to Home</a>
+            <a href="{{ url_for('main.portfolio') }}" class="btn btn-outline">See What We've Built</a>
+        </div>
+        <nav class="error-links" aria-label="Other pages">
+            <a href="{{ url_for('main.services') }}">Services &amp; Pricing</a>
+            <a href="{{ url_for('main.about') }}">About</a>
+            <a href="{{ url_for('main.blog') }}">Blog</a>
+            <a href="{{ url_for('contact.contact') }}">Contact</a>
+        </nav>
+    </div>
+</section>
+{% endblock %}

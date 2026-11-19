@@ -31,6 +31,11 @@
 {% for key in project.categories %}{{ project_categories[key][1] }}{% if not loop.last %} &middot; {% endif %}{% endfor %}
 {%- endmacro %}
 
+{# "Based in Stockton, CA" with a map pin, under the hero buttons and in the footer (styles: .location-line) #}
+{% macro location_line(extra_class='') -%}
+<p class="location-line{% if extra_class %} {{ extra_class }}{% endif %}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Based in Stockton, CA</p>
+{%- endmacro %}
+
 {# The Static Designs logo: "{Static}" over a letter-spaced "DESIGNS" (styles: .logo in style.css) #}
 {% macro brand_logo(extra_class='') -%}
 <a href="{{ url_for('main.home') }}" class="logo{% if extra_class %} {{ extra_class }}{% endif %}" aria-label="Static Designs">

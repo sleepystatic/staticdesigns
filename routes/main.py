@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, abort, request, url_for, Response
+import os
+
+from flask import Blueprint, render_template, abort, request, url_for, Response, current_app, send_from_directory
 from projects import PROJECTS, CATEGORIES, PAGESPEED_MEASURED
 from pagespeed import pagespeed_meter
 
@@ -6,7 +8,17 @@ main_bp = Blueprint('main', __name__)
 main_bp.add_app_template_global(pagespeed_meter)
 main_bp.add_app_template_global(CATEGORIES, 'project_categories')
 
+# Newest first. image is the card picture on /blog in static/images; template is the post's page in templates/blog.
 BLOG_POSTS = [
+    {
+        'slug': 'how-to-optimize-your-pagespeed-score',
+        'title': "How to Optimize Your Website's PageSpeed Score",
+        'description': "What Google's PageSpeed score measures, what its five numbers mean, and the fixes that raise it, with real examples from our own site.",
+        'date': 'November 13, 2026',
+        'read_time': '8 min read',
+        'image': 'blog-pagespeed-scores.webp',
+        'template': 'blog/how-to-optimize-your-pagespeed-score.html'
+    },
     {
         'slug': 'why-custom-coded-websites-beat-wordpress',
         'title': 'Why Custom-Coded Websites Beat WordPress, Wix, Squarespace, and GoDaddy',
@@ -51,10 +63,15 @@ def services():
     """Services and pricing page with competitor comparison"""
     return render_template('services.html')
 
+# The About page photo. It appears as soon as this file exists (made by `scripts/optimize_images.py headshot`);
+# until then the page shows initials in its place.
+HEADSHOT = 'images/headshot.webp'
+
 @main_bp.route('/about')
 def about():
     """About page"""
-    return render_template('about.html')
+    has_headshot = os.path.isfile(os.path.join(current_app.static_folder, HEADSHOT))
+    return render_template('about.html', headshot=HEADSHOT if has_headshot else None)
 
 @main_bp.route('/blog')
 def blog():
@@ -73,6 +90,11 @@ def blog_post(slug):
 def privacy():
     """Privacy policy, linked from the footer and the contact form"""
     return render_template('privacy.html')
+
+@main_bp.route('/favicon.ico')
+def favicon():
+    """The {S} icon at the address browsers and other tools check when a page doesn't name its icon"""
+    return send_from_directory(os.path.join(current_app.static_folder, 'images'), 'favicon.ico', mimetype='image/x-icon')
 
 @main_bp.route('/robots.txt')
 def robots():

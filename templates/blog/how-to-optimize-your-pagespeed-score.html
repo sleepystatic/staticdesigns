@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+{% from "macros.html" import speed_meter %}
+
+{% block title %}{{ post.title }} - Static Designs Blog{% endblock %}
+{% block description %}{{ post.description }}{% endblock %}
+
+{% block content %}
+<article class="blog-post">
+    <header class="blog-post-header">
+        <div class="container">
+            <a href="{{ url_for('main.blog') }}" class="blog-back-link">&larr; Back to Blog</a>
+            <h1 class="blog-post-title">{{ post.title }}</h1>
+            <div class="blog-post-meta">
+                <span>{{ post.date }}</span>
+                <span>{{ post.read_time }}</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="blog-post-body">
+            <p class="lead-text">Every project in our portfolio carries a small colored ring with a number inside. That's its PageSpeed score: Google's 0 to 100 grade for how quickly a page loads and how steady it stays while it loads. Here's what the score measures, how to read the ring, and the fixes that move a website into the green.</p>
+
+            <p>We'll use our own site as the example. Not long ago, our homepage scored 66 on mobile. Today it scores in the high 90s, and every fix that got it there is below.</p>
+
+            <h2>What PageSpeed Insights measures</h2>
+
+            <p><a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">PageSpeed Insights</a> is Google's free speed test. Enter any web address and it loads the page twice: once as a mid-range phone on a slow mobile connection, and once as a desktop computer on a fast connection. Each run gets a performance score from 0 to 100:</p>
+
+            <ul class="speed-metrics score-bands">
+                <li class="speed-pass">Good<span>90&ndash;100</span></li>
+                <li class="speed-average">Needs improvement<span>50&ndash;89</span></li>
+                <li class="speed-fail">Poor<span>0&ndash;49</span></li>
+            </ul>
+
+            <p>The testing engine behind it is called Lighthouse. It's also built into Chrome's developer tools, so developers can run the same test while they build.</p>
+
+            <h2>Why your score matters</h2>
+
+            <ul class="blog-list">
+                <li><strong>Visitors don't wait.</strong> On a phone, a page that sits blank for a few seconds often loses the visitor to the next search result.</li>
+                <li><strong>Google takes it into account.</strong> Google uses real-world speed data, called Core Web Vitals, in its search rankings. Relevant content still matters most, so think of speed as an edge, not a shortcut.</li>
+                <li><strong>It's a first impression.</strong> A site that appears instantly and holds still feels as professional as the business behind it.</li>
+            </ul>
+
+            <h2>Mobile vs. desktop scores</h2>
+
+            <p>The mobile test slows everything down on purpose to match a typical phone on a weak signal, so almost every site scores lower on mobile than on desktop. That's normal, and it's why you should compare mobile to mobile and desktop to desktop.</p>
+
+            <p>The rings on our project pages show the desktop result, and each project page labels it that way.</p>
+
+            <h2 id="five-measurements">The five measurements behind the score</h2>
+
+            <p>The score isn't a single stopwatch reading. It's a weighted blend of five measurements, each graded on its own. Here they are in the order they appear around our rings, starting at the top and going clockwise:</p>
+
+            <div class="metric-list">
+                <div class="metric-item">
+                    <h3><span class="metric-abbr">FCP</span> First Contentful Paint <span class="metric-weight">10% of the score</span></h3>
+                    <p>How long until the first text or image appears. It's the moment a visitor knows the page is working.</p>
+                    <p class="metric-target">Green at about 0.9&nbsp;s or less on desktop, 1.8&nbsp;s or less on mobile</p>
+                </div>
+                <div class="metric-item">
+                    <h3><span class="metric-abbr">LCP</span> Largest Contentful Paint <span class="metric-weight">25% of the score</span></h3>
+                    <p>How long until the largest thing on the screen, usually the main photo or headline, has finished loading. This is when the page feels loaded.</p>
+                    <p class="metric-target">Green at 1.2&nbsp;s or less on desktop, 2.5&nbsp;s or less on mobile</p>
+                </div>
+                <div class="metric-item">
+                    <h3><span class="metric-abbr">TBT</span> Total Blocking Time <span class="metric-weight">30% of the score</span></h3>
+                    <p>How long the page is too busy running code to respond to a tap or click while it loads. It's the biggest slice of the score, and it's where heavy scripts, plugins, and widgets cost the most.</p>
+                    <p class="metric-target">Green at 150&nbsp;ms or less on desktop, 200&nbsp;ms or less on mobile</p>
+                </div>
+                <div class="metric-item">
+                    <h3><span class="metric-abbr">CLS</span> Cumulative Layout Shift <span class="metric-weight">25% of the score</span></h3>
+                    <p>How much the page jumps around while it loads, like a button that moves just as you go to tap it. It's measured as a score, not a time, and lower is better.</p>
+                    <p class="metric-target">Green at 0.1 or less on desktop and mobile</p>
+                </div>
+                <div class="metric-item">
+                    <h3><span class="metric-abbr">SI</span> Speed Index <span class="metric-weight">10% of the score</span></h3>
+                    <p>How quickly the visible part of the page fills in overall, not just its first or largest piece.</p>
+                    <p class="metric-target">Green at about 1.3&nbsp;s or less on desktop, 3.4&nbsp;s or less on mobile</p>
+                </div>
+            </div>
+
+            <h2>How to read the rings on our project pages</h2>
+
+            <p>Now the ring makes sense. The number in the middle is the score. The ring around it is cut into five arcs, one per measurement. Each arc is as long as that measurement's share of the score, so Total Blocking Time gets the longest one, and each arc fills up as far as the site scored on it, in Google's colors. A complete green ring means every measurement passed.</p>
+
+            <p>Here's the ring from our Moore Quality Builders project, with the math behind its 99:</p>
+
+            {# A snapshot of the October 2026 result in projects.py, so the numbers match the text even after re-measuring #}
+            {% set example = pagespeed_meter({'score': 99, 'fcp': 0.7, 'lcp': 0.7, 'tbt': 0, 'cls': 0.025, 'si': 0.8}) %}
+            <figure class="blog-figure">
+                {% if example %}{{ speed_meter(example, labels=true) }}{% endif %}
+                <table class="score-breakdown">
+                    <thead>
+                        <tr><th scope="col">Measurement</th><th scope="col">Result</th><th scope="col">Points</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><th scope="row">First Contentful Paint</th><td>0.7&nbsp;s</td><td>9.7 / 10</td></tr>
+                        <tr><th scope="row">Largest Contentful Paint</th><td>0.7&nbsp;s</td><td>24.75 / 25</td></tr>
+                        <tr><th scope="row">Total Blocking Time</th><td>0&nbsp;ms</td><td>30 / 30</td></tr>
+                        <tr><th scope="row">Cumulative Layout Shift</th><td>0.025</td><td>25 / 25</td></tr>
+                        <tr><th scope="row">Speed Index</th><td>0.8&nbsp;s</td><td>9.9 / 10</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><th scope="row">Score</th><td></td><td>99</td></tr>
+                    </tfoot>
+                </table>
+                <figcaption>Moore Quality Builders on desktop, October 2026. Each measurement earns up to its share of 100 points, and these add up to 99.35, which rounds to 99. Google rounds the times it shows, so the points are close estimates.</figcaption>
+            </figure>
+
+            <p>That's also why two sites with the same score can have different rings, and why a site can give up a point or two on one measurement and still land in the 90s.</p>
+
+            <p>Each project page lists all five results, the month they were measured, and a link to run the test yourself. Scores drift a few points between runs and over time, as Google updates its test and as sites change, so we date every result. <a href="{{ url_for('main.portfolio') }}">See every project's ring in our portfolio</a>.</p>
+
+            <h2>How to raise your score</h2>
+
+            <p>These are the fixes that move the numbers the most, roughly in the order we'd tackle them.</p>
+
+            <h3>1. Shrink your images</h3>
+
+            <p>Images are usually the heaviest part of a page and the most common reason for a slow Largest Contentful Paint.</p>
+
+            <ul class="blog-list">
+                <li>Save photos as <strong>WebP</strong> (or AVIF) instead of PNG or full-size JPG. They're often a fraction of the size with no visible difference.</li>
+                <li>Resize each image to the largest size it's actually shown, and give phones a smaller copy (the <code>srcset</code> attribute does this).</li>
+                <li>Let images further down the page wait until the visitor scrolls near them (<code>loading="lazy"</code>), but never the main image at the top. Tell the browser to fetch that one first (<code>fetchpriority="high"</code>).</li>
+                <li>Give every image a width and height so the browser can save its space before it arrives.</li>
+            </ul>
+
+            <div class="blog-callout">
+                <p><strong>From our own site:</strong> when our homepage scored 66 on mobile, its main content took 10.8&nbsp;seconds to appear on the test phone. The page weighed about 6.9&nbsp;MB, mostly images, including a 1&nbsp;MB logo. Today each project screenshot is a WebP file under 40&nbsp;KB, and the logo is text styled with CSS, so there's no logo image to download at all.</p>
+            </div>
+
+            <h3>2. Go easy on fonts</h3>
+
+            <p>Custom fonts look great, but each one is a file the browser has to fetch before it can draw your text the way you designed it.</p>
+
+            <ul class="blog-list">
+                <li>Stick to one or two font families, and only the weights you actually use.</li>
+                <li>Host font files on your own site instead of loading them from a font service, which costs an extra connection to someone else's server.</li>
+                <li>Use the compact WOFF2 format, preload your main font file, and set <code>font-display: swap</code> so text appears right away in a backup font.</li>
+            </ul>
+
+            <div class="blog-callout">
+                <p><strong>From our own site:</strong> loading our font from Google Fonts held up the first paint by about 1.5&nbsp;seconds on phones. Now it's a single 27&nbsp;KB file served from our own site.</p>
+            </div>
+
+            <h3>3. Cut back on JavaScript</h3>
+
+            <p>Every script has to download and then run, and while it runs, the page can't respond. That's where Total Blocking Time comes from, and it's where page builders and plugin-heavy sites lose the most points.</p>
+
+            <ul class="blog-list">
+                <li>Remove scripts and plugins you don't need, like an entire library loaded for one slideshow.</li>
+                <li>Load the rest with <code>defer</code> so they don't hold up the page.</li>
+                <li>Avoid code that measures the page while it's still loading. Each measurement forces the browser to stop and recalculate the layout.</li>
+            </ul>
+
+            <div class="blog-callout">
+                <p><strong>From our own site:</strong> one small check that measured our project carousel while the page loaded cost about 170&nbsp;ms of blocking time on phones. Fixing it, along with the font change above, helped take our homepage from 90 to 98 on mobile.</p>
+            </div>
+
+            <h3>4. Be choosy about add-ons</h3>
+
+            <p>Chat bubbles, review widgets, social feeds, embedded maps and videos, and tracking pixels all load code from someone else's server, and you can't make their code faster.</p>
+
+            <ul class="blog-list">
+                <li>Keep the ones that earn their place.</li>
+                <li>Load the rest after the page is ready, or show a lightweight preview, like a video thumbnail, that loads the real thing only when it's clicked.</li>
+            </ul>
+
+            <h3>5. Keep things from jumping around</h3>
+
+            <p>Layout shift is often the quickest of the five to fix:</p>
+
+            <ul class="blog-list">
+                <li>Give every image, video, and embed a set size, or at least a shape (an aspect ratio), so its space is held before it loads.</li>
+                <li>Don't push content down after the page appears, like a banner that slides in above everything.</li>
+                <li>Animate by moving and fading things (CSS <code>transform</code> and <code>opacity</code>) instead of changing their size or position on the page.</li>
+            </ul>
+
+            <div class="blog-callout">
+                <p><strong>From our own site:</strong> our menu bar floats at the top of the page, then stretches edge to edge once you scroll. Resizing it the obvious way would have counted as layout shift every time, so it changes shape with clipping and movement instead, and the page's layout shift stays at zero.</p>
+            </div>
+
+            <h3>6. Start with fast hosting</h3>
+
+            <p>Nothing appears until the server answers, so a slow host drags down every other number.</p>
+
+            <ul class="blog-list">
+                <li>Choose hosting with quick response times, and turn on compression (Brotli or gzip) and caching.</li>
+                <li>If your customers are spread out, use a CDN so files come from a server near them.</li>
+                <li>Keep pages lean. The less there is to send, the sooner it arrives.</li>
+            </ul>
+
+            <h2>How to test your own site</h2>
+
+            <ol>
+                <li>Go to <a href="https://pagespeed.web.dev/" target="_blank" rel="noopener">pagespeed.web.dev</a>, enter your address, and run the test.</li>
+                <li>Check both the Mobile and Desktop tabs. Mobile is the tougher test, and it's how many of your customers will see your site.</li>
+                <li>Run it three times and go with the middle score. Results naturally move a few points between runs.</li>
+                <li>If your site gets enough visitors using Chrome, the top of the report also shows how real people experienced it over the past 28 days. That real-world data is what Google's rankings use. Smaller sites often don't have enough traffic for it, which makes the lab test your best guide.</li>
+                <li>Scroll past the score for the specific issues slowing your page down. Fix the biggest ones first, then test again.</li>
+            </ol>
+
+            <h2>Don't chase 100 at all costs</h2>
+
+            <p>A score in the 90s is excellent. Past that point, a feature that brings in customers, like a booking calendar or a map, is worth more than the last point or two. Speed supports clear content and an easy way to reach you; it doesn't replace them. The goal is a site that feels instant to your customers.</p>
+
+            <div class="blog-cta-box">
+                <h3>Curious how your site scores?</h3>
+                <p>We'll test your website for free, show you what's slowing it down, and explain how to fix it.</p>
+                <a href="{{ url_for('contact.contact') }}" class="btn btn-primary">Get Your Free Website Evaluation</a>
+            </div>
+        </div>
+    </div>
+</article>
+{% endblock %}

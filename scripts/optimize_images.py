@@ -2,7 +2,7 @@
 import argparse
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCES = ROOT / 'image-sources'
@@ -10,10 +10,14 @@ IMAGES = ROOT / 'static' / 'images'
 SCREENSHOT_WIDTHS = (720, 1200)
 PHONE_RATIO = 9 / 19.5
 PHONE_MAX_WIDTH = 720
+HEADSHOT_SIZE = 640
 
 
-def load(path):
+def load(path, upright=False):
     im = Image.open(path)
+    if upright:
+        # Phone photos store which way is up separately; apply it so the picture isn't sideways
+        im = ImageOps.exif_transpose(im)
     if im.mode in ('RGBA', 'LA', 'P'):
         im = im.convert('RGBA')
         if im.getchannel('A').getextrema()[0] < 255:
@@ -51,6 +55,18 @@ def mobile(path, out):
     save(im.resize((width, round(width / PHONE_RATIO)), Image.LANCZOS), out / f'{path.stem}.webp', 85)
 
 
+def headshot(path, out):
+    # The About page photo (shown in a circle): a centered square, cut nearer the top of a tall photo so the
+    # head stays in frame. Always saved as headshot.webp, the name routes/main.py looks for.
+    im = load(path, upright=True)
+    side = min(im.size)
+    left = (im.width - side) // 2
+    top = (im.height - side) // 4
+    im = im.crop((left, top, left + side, top + side))
+    size = min(side, HEADSHOT_SIZE)
+    save(im.resize((size, size), Image.LANCZOS), out / 'headshot.webp', 85)
+
+
 def logo(path, height, out):
     im = load(path)
     height = min(height, im.height)
@@ -60,8 +76,9 @@ def logo(path, height, out):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Make WebP copies of site images.')
-    parser.add_argument('kind', choices=['all', 'screenshot', 'mobile', 'logo'],
-                        help='all = every *-preview (desktop) and *-mobile (phone) image in image-sources/')
+    parser.add_argument('kind', choices=['all', 'screenshot', 'mobile', 'logo', 'headshot'],
+                        help='all = every *-preview (desktop) and *-mobile (phone) image in image-sources/; '
+                             'headshot = the About page photo')
     parser.add_argument('files', nargs='*', type=Path)
     parser.add_argument('--height', type=int, default=96, help='logo height in pixels (default 96)')
     parser.add_argument('--out', type=Path, help='output folder (default static/images, or static/images/logos for logos)')
@@ -81,5 +98,7 @@ if __name__ == '__main__':
                 screenshot(file, out)
             elif args.kind == 'mobile':
                 mobile(file, out)
+            elif args.kind == 'headshot':
+                headshot(file, out)
             else:
                 logo(file, args.height, out)

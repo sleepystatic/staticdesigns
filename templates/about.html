@@ -1,101 +1,111 @@
 {% extends "base.html" %}
+{# The name this page introduces you by; change it here and it updates everywhere on the page #}
+{% set owner_name = 'Taylor Bryan' %}
 
 {% block title %}About - Static Designs{% endblock %}
-{% block description %}Learn about Static Designs and our mission to provide professional web development with personalized service and competitive pricing.{% endblock %}
+{% block description %}Meet {{ owner_name }}, the developer behind Static Designs in Stockton, CA. Work 1-on-1 with the person who builds your website, online store, or custom software.{% endblock %}
 
 {% block content %}
 <!-- About Header -->
 <section class="page-header">
     <div class="container">
-        <h1 class="page-title">About Static Designs</h1>
-        <p class="page-subtitle">Bringing your digital vision to life, one project at a time</p>
+        <h1 class="page-title">Meet Your Developer</h1>
+        <p class="page-subtitle">When you work with Static Designs, you work with me, 1-on-1, from the first call to launch day and beyond.</p>
     </div>
 </section>
 
-<!-- About Content -->
+<!-- Bio, with the headshot beside it -->
 <section class="about-content section-padding">
     <div class="container">
-        <div class="about-intro">
-            <h2>Our Story</h2>
-            <p class="lead-text">Static Designs was founded on a simple belief: quality web development should be accessible, affordable, and personal. We're not a faceless agency with layers of management - we're a dedicated team that works directly with you to bring your vision to life.</p>
-        </div>
-        
-        <div class="about-mission">
-            <h2>What We Do</h2>
-            <p>We specialize in creating custom websites that are beautiful, functional, and built to perform. Whether you need a simple portfolio site, a business website, or a complex e-commerce platform, we have the expertise to deliver.</p>
-            <p>Every project is approached with the same level of care and attention to detail. No templates or cookie-cutter solutions. Your website is built from scratch based on your unique requirements and brand identity.</p>
+        <div class="about-profile">
+            <div class="about-photo">
+                {% if headshot %}
+                <img src="{{ url_for('static', filename=headshot) }}" alt="{{ owner_name }}, founder of Static Designs" width="640" height="640" decoding="async" fetchpriority="high">
+                {% else %}
+                {# Until static/images/headshot.webp exists (scripts/optimize_images.py headshot), show initials in the logo's braces #}
+                <span class="about-photo-initials" aria-hidden="true"><span class="logo-brace">{</span>{{ owner_name.split() | map('first') | join }}<span class="logo-brace">}</span></span>
+                {% endif %}
+            </div>
+
+            <div class="about-bio">
+                <h2>Hi, I'm {{ owner_name }}.</h2>
+                <p class="lead-text">I'm the developer behind Static Designs. The person you talk to is the person who plans, designs, and builds your project. No account managers, no hand-offs.</p>
+                <p>I started Static Designs on a simple belief: quality web development should be accessible, affordable, and personal. I build custom-coded websites, online stores, apps, and business systems from scratch, without templates or page builders, and I've been building for the web for 5+ years.</p>
+                <p>Besides client work, I build and run my own products, Gameboy Retreat and PixelFlip, so I know firsthand what it takes to run a business online.</p>
+                <p>I'm based in Stockton, CA. If you're local, we can meet in person; if not, we'll meet over Zoom. Either way, you'll hear back from me within 24 hours.</p>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Our Values -->
-<section class="values-section section-padding bg-light">
+<!-- How We'll Work Together -->
+<section class="approach-section section-padding bg-light">
     <div class="container">
-        <h2 class="section-title">Our Values</h2>
-        
+        <h2 class="section-title">How We'll Work Together</h2>
+        <div class="approach-content">
+            <div class="approach-item">
+                <h3>1-on-1, Start to Finish</h3>
+                <p>You'll work directly with me, in person or over Zoom. No project managers and no middlemen: the person you talk to is the person building your project.</p>
+            </div>
+
+            <div class="approach-item">
+                <h3>Your Creative Control</h3>
+                <p>It's your business and your vision. I'll bring expert guidance and a solid foundation, but the creative decisions are always yours.</p>
+            </div>
+
+            <div class="approach-item">
+                <h3>Built From Scratch</h3>
+                <p>Everything is custom-coded for your business. No templates and no page builders, so your site fits how you actually work.</p>
+            </div>
+
+            <div class="approach-item">
+                <h3>Fast on Every Device</h3>
+                <p>Every project is tested on phones, tablets, and desktops and tuned for speed. You can see each portfolio project's Google PageSpeed score.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What You Can Count On -->
+<section class="values-section section-padding">
+    <div class="container">
+        <h2 class="section-title">What You Can Count On</h2>
+
         <div class="values-grid">
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
                 <h3>Customer-Focused</h3>
-                <p>Your success is our success. We listen to your needs and work collaboratively to exceed your expectations.</p>
+                <p>Your success is my success. I listen first, then build what your business actually needs.</p>
             </div>
-            
+
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 18 3 22 9 12 22 2 9"></polygon><path d="M12 22 12 9"></path><path d="M6 3 12 9 18 3"></path></svg></div>
                 <h3>Quality First</h3>
-                <p>We never compromise on quality. Clean code, optimized performance, and attention to detail in every project.</p>
+                <p>Clean code, fast pages, and attention to detail on every project, big or small.</p>
             </div>
-            
+
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
                 <h3>Transparent Communication</h3>
-                <p>No surprises, no hidden fees. We keep you informed at every step with clear, honest communication.</p>
+                <p>No surprises and no hidden fees. You'll always know where your project stands.</p>
             </div>
-            
+
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div>
-                <h3>Efficient & Reliable</h3>
-                <p>We respect your time and deadlines. Projects are delivered on schedule without sacrificing quality.</p>
+                <h3>Efficient &amp; Reliable</h3>
+                <p>I respect your time and your deadlines, and I deliver on schedule without sacrificing quality.</p>
             </div>
-            
+
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="6" x2="12" y2="18"></line><path d="M15 9a3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 3 6 3 6 6a3 3 0 0 1-3 3 3 3 0 0 1-3-3"></path></svg></div>
                 <h3>Fair Pricing</h3>
-                <p>Professional quality at competitive rates. Great websites shouldn't break the bank.</p>
+                <p>Professional quality at small-business prices. A great website shouldn't break the bank.</p>
             </div>
-            
+
             <div class="value-card">
                 <div class="value-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
                 <h3>Continuous Growth</h3>
-                <p>We stay current with the latest web technologies to deliver modern, future-proof solutions.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Our Approach -->
-<section class="approach-section section-padding">
-    <div class="container">
-        <h2 class="section-title">Our Approach</h2>
-        <div class="approach-content">
-            <div class="approach-item">
-                <h3>1-on-1 Collaboration</h3>
-                <p>You'll work directly with your developer through Zoom meetings or in-person sessions. No project managers, no middlemen—just direct, efficient communication.</p>
-            </div>
-            
-            <div class="approach-item">
-                <h3>Your Creative Control</h3>
-                <p>This is your website, your vision. We provide expert guidance and a thoughtful foundation, but the creative decisions are always yours to make.</p>
-            </div>
-            
-            <div class="approach-item">
-                <h3>Custom Solutions</h3>
-                <p>We build everything from scratch. No templates, no shortcuts. Your website will be truly unique and tailored to your specific needs.</p>
-            </div>
-            
-            <div class="approach-item">
-                <h3>Responsive & Modern</h3>
-                <p>Every website we build looks stunning and functions flawlessly on all devices—from smartphones to large desktop monitors.</p>
+                <p>I keep up with the latest web technology, so what I build for you stays modern.</p>
             </div>
         </div>
     </div>
@@ -105,7 +115,7 @@
 <section class="cta-section section-padding">
     <div class="container">
         <h2 class="cta-title">Let's Work Together</h2>
-        <p class="cta-subtitle">Ready to start your project? Get in touch for a free consultation</p>
+        <p class="cta-subtitle">Tell me about your project. The first consultation is free, with no pressure to commit.</p>
         <a href="{{ url_for('contact.contact') }}" class="btn btn-cta-outline btn-large">Get Your Free Website Evaluation</a>
     </div>
 </section>

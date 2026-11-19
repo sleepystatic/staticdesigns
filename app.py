@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from config import Config
 from models import db
 import os
@@ -15,6 +15,11 @@ def create_app():
 
     app.register_blueprint(main_bp)
     app.register_blueprint(contact_bp)
+
+    # Bad links get the site's own "page not found" page (templates/404.html) instead of Flask's plain one
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html'), 404
 
     with app.app_context():
         db.create_all()
